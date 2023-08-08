@@ -12,7 +12,6 @@ import '../controller/turf_controller.dart';
 import '../provider/availbilty_provider.dart';
 import '../provider/dimension_selector_provider.dart';
 import '../provider/selected_timetabel_provider.dart';
-import '../provider/timetable_indices_provider.dart';
 
 class PaymentConfirmPage extends ConsumerStatefulWidget {
   final Turf turf;
@@ -67,7 +66,6 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     //     context: context,
     //     timeId: ref.read(availibiltyNotifierProvider).timeId);
     ref.invalidate(selectedTimeTableNotifierProvider);
-    ref.invalidate(timeTableIndicesNotifierProvider);
     willPop ? context.pop() : null;
   }
 
