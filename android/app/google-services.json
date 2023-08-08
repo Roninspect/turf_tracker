@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "49774687082",
+    "project_id": "turf-tracker",
+    "storage_bucket": "turf-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49774687082:android:2010360e213b70fe30ab13",
+        "android_client_info": {
+          "package_name": "com.example.turf_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49774687082-d4okj7a54ep87dv180h0t3e0o6injfei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.turf_tracker",
+            "certificate_hash": "e41926546f8c8d59df37646c7263305c512b9bf5"
+          }
+        },
+        {
+          "client_id": "49774687082-d6svr09h6mhqll0klq2rh7051qo431kg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3P26Gnlq3bqsY6ulf5GwYoS60ttt1-UY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49774687082-d6svr09h6mhqll0klq2rh7051qo431kg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "49774687082-sivfr42rqmt4fgmnabaedbggkt410knr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.turfTracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
