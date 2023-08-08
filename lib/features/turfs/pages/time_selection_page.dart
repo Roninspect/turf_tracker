@@ -254,18 +254,21 @@ class TimeSelectionPage extends ConsumerWidget {
                         child: CircularProgressIndicator(),
                       ),
                     ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
               ],
             ),
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            context.pushNamed(AppRoutes.paymentConfirm.name,
-                pathParameters: {
-                  'name': turf.name,
-                },
-                extra: turf);
+            if (selectedSlotType != null) {
+              context.pushNamed(AppRoutes.paymentConfirm.name,
+                  pathParameters: {
+                    'name': turf.name,
+                  },
+                  extra: turf);
+            }
+
             // ref.read(turfControllerProvider).lockingSelectedTimeSlot(
             //     timetableIndices: listofIndices,
             //     updatedTimetables: listofTime,
