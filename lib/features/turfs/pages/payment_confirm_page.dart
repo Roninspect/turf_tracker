@@ -1,18 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bkash/flutter_bkash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:turf_tracker/common/colors.dart';
-import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/turfs/provider/slot_type_selector_provider.dart';
 import 'package:turf_tracker/models/turf.dart';
-import 'package:uuid/uuid.dart';
-import '../../../models/booking.dart';
-import '../../bookings/controller/booking_controller.dart';
 import '../controller/turf_controller.dart';
 import '../provider/availbilty_provider.dart';
 import '../provider/dimension_selector_provider.dart';
@@ -81,10 +76,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     final avalibilty = ref.watch(availibiltyNotifierProvider);
     final timelist = ref.watch(selectedTimeTableNotifierProvider);
     final dimensionSlected = ref.watch(dimensionSelectionNotifierProvider);
-    final listofIndices = ref.watch(timeTableIndicesNotifierProvider);
     final selectedSlotType = ref.watch(slotTypeNotifierProvider);
-
-    final user = ref.watch(userDataNotifierProvider);
 
     // Use DateFormat to format the date, month, and weekday
     DateTime dateTime = avalibilty.date.toDate();
@@ -245,7 +237,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
           backgroundColor: greenColor,
           onPressed: () async {
             ref.read(turfControllerProvider).updateTimeSlotAfterBooking(
-                selectedSlot: timelist,
+                selectedSlot: timelist!,
                 slotType: selectedSlotType!,
                 selectedAvailibilty: avalibilty,
                 context: context);

@@ -21,7 +21,7 @@ class DateSelectorListview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dimensionSlected = ref.watch(dimensionSelectionNotifierProvider);
-    final Availibilty timeAvailibiltyFromTimeSelected =
+    final Availibilty? timeAvailibiltyFromTimeSelected =
         ref.watch(availibiltyNotifierProvider);
     return SizedBox(
       height: 120,
@@ -45,7 +45,8 @@ class DateSelectorListview extends ConsumerWidget {
                       DateFormat('MMMM').format(DateTime(2023, monthNo));
 
                   bool idSelected =
-                      timeAvailibiltyFromTimeSelected.date.toDate().day == date;
+                      timeAvailibiltyFromTimeSelected!.date.toDate().day ==
+                          date;
 
                   return data.isNotEmpty
                       ? Padding(

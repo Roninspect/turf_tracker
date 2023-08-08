@@ -7,9 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/features/turfs/controller/turf_controller.dart';
 import 'package:turf_tracker/features/turfs/provider/availbilty_provider.dart';
-import 'package:turf_tracker/features/turfs/provider/dimension_selector_provider.dart';
 import 'package:turf_tracker/features/turfs/provider/selected_timetabel_provider.dart';
-import 'package:turf_tracker/features/turfs/provider/timetable_indices_provider.dart';
 import 'package:turf_tracker/features/turfs/widgets/date_selector_listview.dart';
 import 'package:turf_tracker/features/turfs/widgets/timeslot_info.dart';
 import 'package:turf_tracker/models/turf.dart';
@@ -26,27 +24,24 @@ class TimeSelectionPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dimensionSlected = ref.watch(dimensionSelectionNotifierProvider);
     final Availibilty timeAvailibiltyFromTimeSelected =
         ref.watch(availibiltyNotifierProvider);
     final selectedSlotType = ref.watch(slotTypeNotifierProvider);
 
     final selectedTime = ref.watch(selectedTimeTableNotifierProvider);
-    final index = ref.watch(timeTableIndicesNotifierProvider);
 
-    // Function to calculate the color based on singleTimeAvailable properties
-    // Function to calculate the color based on singleTimeAvailable properties
-    Color getCellColor(TimeTable singleTimeAvailable, bool isTimeSelected) {
-      if (isTimeSelected) {
-        return greenColor;
-      } else if (singleTimeAvailable.isLocked) {
-        return lockedColor;
-      } else if (singleTimeAvailable.isAvailable) {
-        return Colors.transparent; // Change this to another color if needed
-      } else {
-        return Colors.red;
-      }
-    }
+    // // Function to calculate the color based on singleTimeAvailable properties
+    // Color getCellColor(TimeTable singleTimeAvailable, bool isTimeSelected) {
+    //   if (isTimeSelected) {
+    //     return greenColor;
+    //   } else if (singleTimeAvailable.isLocked) {
+    //     return lockedColor;
+    //   } else if (singleTimeAvailable.isAvailable) {
+    //     return Colors.transparent; // Change this to another color if needed
+    //   } else {
+    //     return Colors.red;
+    //   }
+    // }
 
     return Scaffold(
         backgroundColor: backgroundColor,
