@@ -75,79 +75,80 @@ class TimeSelectionPage extends ConsumerWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Select Date",
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(height: 10),
-              DateSelectorListview(turf: turf),
-              const SizedBox(height: 30),
-              const Text(
-                "Select Slot Type",
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: 150,
-                    child: ListTile(
-                      onTap: () {
-                        ref
-                            .read(slotTypeNotifierProvider.notifier)
-                            .selectSlotType(
-                                slotType: SlotType.oneHourAvailibilty);
-                      },
-                      shape: RoundedRectangleBorder(
-                        //<-- SEE HERE
-                        side: const BorderSide(width: 1, color: greenColor),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      tileColor: selectedSlotType == SlotType.oneHourAvailibilty
-                          ? greenColor
-                          : Colors.transparent,
-                      title: const Center(
-                        child: Text("1 hour"),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 150,
-                    child: ListTile(
-                      onTap: () {
-                        ref
-                            .read(slotTypeNotifierProvider.notifier)
-                            .selectSlotType(
-                                slotType: SlotType.oneHalfHourAvailibilty);
-                      },
-                      shape: RoundedRectangleBorder(
-                        //<-- SEE HERE
-                        side: const BorderSide(width: 1, color: greenColor),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      tileColor:
-                          selectedSlotType == SlotType.oneHalfHourAvailibilty
-                              ? greenColor
-                              : Colors.transparent,
-                      title: const Center(
-                        child: Text("1 hour 30 min"),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Select Date",
+                  style: TextStyle(fontSize: 25),
+                ),
+                const SizedBox(height: 10),
+                DateSelectorListview(turf: turf),
+                const SizedBox(height: 30),
+                const Text(
+                  "Select Slot Type",
+                  style: TextStyle(fontSize: 25),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: ListTile(
+                        onTap: () {
+                          ref
+                              .read(slotTypeNotifierProvider.notifier)
+                              .selectSlotType(
+                                  slotType: SlotType.oneHourAvailibilty);
+                        },
+                        shape: RoundedRectangleBorder(
+                          //<-- SEE HERE
+                          side: const BorderSide(width: 1, color: greenColor),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        tileColor:
+                            selectedSlotType == SlotType.oneHourAvailibilty
+                                ? greenColor
+                                : Colors.transparent,
+                        title: const Center(
+                          child: Text("1 hour"),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                "Select Time Slot",
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ref
+                    SizedBox(
+                      width: 150,
+                      child: ListTile(
+                        onTap: () {
+                          ref
+                              .read(slotTypeNotifierProvider.notifier)
+                              .selectSlotType(
+                                  slotType: SlotType.oneHalfHourAvailibilty);
+                        },
+                        shape: RoundedRectangleBorder(
+                          //<-- SEE HERE
+                          side: const BorderSide(width: 1, color: greenColor),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        tileColor:
+                            selectedSlotType == SlotType.oneHalfHourAvailibilty
+                                ? greenColor
+                                : Colors.transparent,
+                        title: const Center(
+                          child: Text("1 hour 30 min"),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                const Text(
+                  "Select Time Slot",
+                  style: TextStyle(fontSize: 25),
+                ),
+                const SizedBox(height: 10),
+                ref
                     .watch(getTimeAvailibiltiesProvider(TripleArgsModel(
                         turfId: timeAvailibiltyFromTimeSelected.turfId,
                         dimensionId: timeAvailibiltyFromTimeSelected.did,
@@ -165,6 +166,8 @@ class TimeSelectionPage extends ConsumerWidget {
                                 .compareTo(b.startTime.toDate()));
 
                         return GridView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -218,7 +221,7 @@ class TimeSelectionPage extends ConsumerWidget {
                                     children: [
                                       Text(
                                         "$startTimeOnly - $endTimeOnly",
-                                        style: const TextStyle(fontSize: 18),
+                                        style: const TextStyle(fontSize: 17),
                                       ),
                                       Row(
                                         mainAxisAlignment:
@@ -232,7 +235,7 @@ class TimeSelectionPage extends ConsumerWidget {
                                             singleTimeAvailable.price
                                                 .toString(),
                                             style:
-                                                const TextStyle(fontSize: 20),
+                                                const TextStyle(fontSize: 18),
                                           )
                                         ],
                                       ),
@@ -256,8 +259,9 @@ class TimeSelectionPage extends ConsumerWidget {
                         child: CircularProgressIndicator(),
                       ),
                     ),
-              ),
-            ],
+                SizedBox(height: 50),
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
