@@ -9,7 +9,7 @@ import '../../../models/availibilty.dart';
 import '../controller/turf_controller.dart';
 import '../provider/availbilty_provider.dart';
 import '../provider/dimension_selector_provider.dart';
-import '../provider/selected_timetabel_provider.dart';
+import '../provider/selected_timetable_provider.dart';
 
 class DateSelectorListview extends ConsumerWidget {
   final Turf turf;

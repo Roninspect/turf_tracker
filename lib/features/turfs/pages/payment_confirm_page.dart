@@ -11,7 +11,7 @@ import 'package:turf_tracker/models/turf.dart';
 import '../controller/turf_controller.dart';
 import '../provider/availbilty_provider.dart';
 import '../provider/dimension_selector_provider.dart';
-import '../provider/selected_timetabel_provider.dart';
+import '../provider/selected_timetable_provider.dart';
 
 class PaymentConfirmPage extends ConsumerStatefulWidget {
   final Turf turf;

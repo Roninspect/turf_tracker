@@ -72,48 +72,6 @@ class TurfRepository {
             event.docs.map((e) => Availibilty.fromMap(e.data())).toList());
   }
 
-  // // //** updating availibilty status */
-
-  // FutureVoid updateAvailibiltyStatus({
-  //   required List<int> timetableIndices,
-  //   required List<TimeTable> updatedTimetables,
-  //   required String timeId,
-  // }) async {
-  //   try {
-  //     final availabilityDoc =
-  //         await _firestore.collection("time_availibilty").doc(timeId).get();
-
-  //     List<TimeTable> existingTimetableList =
-  //         List.from(availabilityDoc.data()!['availibility'] as List)
-  //             .map((map) => TimeTable.fromMap(map))
-  //             .toList();
-
-  //     for (int i = 0; i < timetableIndices.length; i++) {
-  //       int index = timetableIndices[i];
-  //       if (index >= 0 && index < existingTimetableList.length) {
-  //         existingTimetableList[index] = TimeTable(
-  //           isAvailable: false, // Update the isAvailable field to false
-  //           isLocked: false,
-  //           time: updatedTimetables[i].time,
-  //           price: updatedTimetables[i].price,
-  //         );
-  //       }
-  //     }
-
-  //     return right(
-  //         await _firestore.collection("time_availibilty").doc(timeId).update({
-  //       'availibility': existingTimetableList
-  //           .map((timetable) => timetable.toMap())
-  //           .toList(),
-  //     }));
-  //   } catch (e, stk) {
-  //     if (kDebugMode) {
-  //       print(stk);
-  //     }
-  //     return left(Failure(e.toString()));
-  //   }
-  // }
-
   // //** locking selected time slots */
 
   // FutureVoid lockingselectedtimeslots({
@@ -258,7 +216,7 @@ class TurfRepository {
       }
 
 //** problem is here where i want to also book all the slots that have 30 minute gap
-//**  if o book for start time 6:00 and end time is 7:30pm then it should also make isAvailable: false to 8:00 pm */
+//**  if o book for start time 6:00 and end time is 7:30pm then it should also make isAvailable: false for 8:00 pm */
       List<TimeTable> newUpdatedOneHOurList = [];
       List<TimeTable> newUpdatedOneHalfHourList = [];
 
