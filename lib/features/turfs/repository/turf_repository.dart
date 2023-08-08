@@ -13,7 +13,6 @@ import 'package:turf_tracker/models/dimensions.dart';
 import 'package:turf_tracker/models/favorites.dart';
 import 'package:turf_tracker/models/rating.dart';
 import 'package:turf_tracker/models/turf.dart';
-import 'package:turf_tracker/models/user.dart';
 import 'package:uuid/uuid.dart';
 
 import '../provider/slot_type_selector_provider.dart';
