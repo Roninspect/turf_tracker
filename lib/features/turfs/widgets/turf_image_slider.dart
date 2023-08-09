@@ -7,9 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:turf_tracker/models/turf.dart';
 
-import '../provider/image_slider_index.dart';
-
-class TurfImageSlider extends ConsumerWidget {
+class TurfImageSlider extends ConsumerStatefulWidget {
   final Turf turf;
   const TurfImageSlider({
     super.key,
@@ -17,12 +15,20 @@ class TurfImageSlider extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _TurfImageSliderState();
+}
+
+class _TurfImageSliderState extends ConsumerState<TurfImageSlider> {
+  int sliderIndex = 0;
+  @override
+  Widget build(BuildContext context) {
     return Stack(alignment: Alignment.bottomCenter, children: [
       CarouselSlider.builder(
-        itemCount: turf.images.length,
+        carouselController: CarouselController(),
+        itemCount: widget.turf.images.length,
         itemBuilder: (context, index, realIndex) {
-          final singleImage = turf.images[index];
+          final singleImage = widget.turf.images[index];
           return Padding(
             padding: const EdgeInsets.only(right: 5.0),
             child: Container(
@@ -39,17 +45,17 @@ class TurfImageSlider extends ConsumerWidget {
           clipBehavior: Clip.none,
           viewportFraction: 1,
           onPageChanged: (index, reason) {
-            ref
-                .read(imageSliderNotifierProvider.notifier)
-                .changeIndex(index: index);
+            setState(() {
+              sliderIndex = index;
+            });
           },
         ),
       ),
       Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: DotsIndicator(
-          dotsCount: turf.images.length,
-          position: ref.watch(imageSliderNotifierProvider),
+          dotsCount: widget.turf.images.length,
+          position: sliderIndex,
           decorator: const DotsDecorator(
               activeColor: Colors.white, activeShape: LinearBorder()),
           // position: index,
