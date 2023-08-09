@@ -203,34 +203,34 @@ class _TurfDetailsPageState extends ConsumerState<TurfDetailsPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              // const Text(
-              //   "Amenities: ",
-              //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              // ),
-              // const SizedBox(height: 10),
-              // SizedBox(
-              //   height: 60,
-              //   child: ListView.builder(
-              //     scrollDirection: Axis.horizontal,
-              //     itemCount: widget.turf.amenities.length,
-              //     itemBuilder: (context, index) {
-              //       final amenity = widget.turf.amenities[index];
+              const Text(
+                "Amenities: ",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 60,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.turf.amenities.length,
+                  itemBuilder: (context, index) {
+                    final amenity = widget.turf.amenities[index];
 
-              //       return Padding(
-              //           padding: const EdgeInsets.only(right: 12.0),
-              //           child: Column(
-              //             children: [
-              //               Image.network(
-              //                 amenity.iconUrl,
-              //                 height: 30,
-              //                 color: greenColor,
-              //               ),
-              //               Text(amenity.amenitiesName),
-              //             ],
-              //           ));
-              //     },
-              //   ),
-              // ),
+                    return Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: Column(
+                          children: [
+                            Image.network(
+                              amenity.iconUrl,
+                              height: 30,
+                              color: greenColor,
+                            ),
+                            Text(amenity.amenitiesName),
+                          ],
+                        ));
+                  },
+                ),
+              ),
               const SizedBox(height: 20),
               const Text(
                 "Sports Allowed to play: ",
@@ -296,7 +296,10 @@ class _TurfDetailsPageState extends ConsumerState<TurfDetailsPage> {
                       child: Text(error.toString()),
                     ),
                     loading: () => const Center(
-                      child: CircularProgressIndicator(),
+                      child: SizedBox(
+                          width: 50,
+                          height: 100,
+                          child: CircularProgressIndicator()),
                     ),
                   ),
 

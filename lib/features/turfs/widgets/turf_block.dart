@@ -48,8 +48,11 @@ class TurfBlock extends ConsumerWidget {
                     child: TurfImageSlider(turf: turf))
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
-                    child: Image.network(
-                      turf.images.first,
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image.network(
+                        turf.images.first,
+                      ),
                     ),
                   ),
             Padding(

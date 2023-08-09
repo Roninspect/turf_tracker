@@ -31,11 +31,15 @@ class _TurfImageSliderState extends ConsumerState<TurfImageSlider> {
           final singleImage = widget.turf.images[index];
           return Padding(
             padding: const EdgeInsets.only(right: 5.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(singleImage, maxWidth: 500),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    image:
+                        CachedNetworkImageProvider(singleImage, maxWidth: 500),
+                  ),
                 ),
               ),
             ),

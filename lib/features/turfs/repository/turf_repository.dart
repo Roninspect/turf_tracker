@@ -43,6 +43,7 @@ class TurfRepository {
     return _firestore
         .collection("turfs")
         .where("district", isEqualTo: alreadySelectedDistrict)
+        .orderBy("name", descending: false)
         .snapshots()
         .map((event) => event.docs.map((e) => Turf.fromMap(e.data())).toList());
   }
