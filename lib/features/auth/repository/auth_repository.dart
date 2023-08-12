@@ -48,6 +48,7 @@ class AuthRepository {
 
 //* listening to auth state changes
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
   //* login user function
   FutureVoid loginUser({
     required String email,
@@ -58,8 +59,8 @@ class AuthRepository {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password),
       );
-    } on FirebaseException catch (e) {
-      return left(Failure(e.toString()));
+    } on FirebaseAuthException catch (e) {
+      return left(Failure(e.message.toString()));
     }
   }
 
@@ -102,7 +103,7 @@ class AuthRepository {
 
       // ignore: avoid_print
       return right(print("not new"));
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       return left(Failure(e.toString()));
     }
   }
@@ -135,7 +136,7 @@ class AuthRepository {
       return right(
         await _firestore.collection('users').doc(userId).set(userModel.toMap()),
       );
-    } on FirebaseException catch (e) {
+    } on FirebaseAuthException catch (e) {
       return left(Failure(e.toString()));
     }
   }
