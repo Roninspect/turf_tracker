@@ -40,13 +40,6 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
   }
 
   @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    unlockSelectedTimeSlots(willPop: true);
-    super.dispose();
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.inactive) {
       unlockSelectedTimeSlots(willPop: true);
@@ -67,6 +60,13 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     //     timeId: ref.read(availibiltyNotifierProvider).timeId);
     ref.invalidate(selectedTimeTableNotifierProvider);
     willPop ? context.pop() : null;
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    unlockSelectedTimeSlots(willPop: true);
+    super.dispose();
   }
 
   @override

@@ -218,6 +218,7 @@ class TurfRepository {
 
 //** problem is here where i want to also book all the slots that have 30 minute gap
 //**  if o book for start time 6:00 and end time is 7:30pm then it should also make isAvailable: false for 8:00 pm */
+
       List<TimeTable> newUpdatedOneHOurList = [];
       List<TimeTable> newUpdatedOneHalfHourList = [];
 
@@ -225,9 +226,9 @@ class TurfRepository {
         newUpdatedOneHOurList = updatedOneHourSlots.map((e) {
           if (e.startTime
                   .toDate()
-                  .difference(selectedSlot.endTime.toDate())
+                  .difference(selectedSlot.endTime.toDate().toUtc())
                   .inMinutes ==
-              30) {
+              31) {
             print(
                 'Updating 30-minute gap slot in 1 hour: ${e.startTime} - ${e.endTime}');
             return e.copyWith(isAvailable: false);
@@ -236,12 +237,14 @@ class TurfRepository {
         }).toList();
 
         newUpdatedOneHalfHourList = updatedOneHalfHourSlots.map((e) {
-          if (e.startTime.toDate().isAfter(selectedSlot.endTime.toDate()) &&
+          if (e.startTime
+                  .toDate()
+                  .isAfter(selectedSlot.endTime.toDate().toUtc()) &&
               e.startTime
                       .toDate()
                       .difference(selectedSlot.endTime.toDate())
                       .inMinutes ==
-                  30) {
+                  31) {
             print(
                 'Updating 30-minute gap slot in 1.5 hour: ${e.startTime} - ${e.endTime}');
             return e.copyWith(isAvailable: false);

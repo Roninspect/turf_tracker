@@ -289,7 +289,7 @@ class _TurfDetailsPageState extends ConsumerState<TurfDetailsPage> {
                       if (!user.hasGivenReview && data.length >= 2) {
                         return GiveReviewCard(turfId: widget.turf.turfId);
                       } else {
-                        return SizedBox.shrink();
+                        return const SizedBox.shrink();
                       }
                     },
                     error: (error, stackTrace) => Center(

@@ -7,7 +7,6 @@ import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/common/show_dialog.dart';
 import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/teams/controller/team_controller.dart';
-
 import 'package:turf_tracker/models/team.dart';
 import 'package:turf_tracker/router/router.dart';
 
@@ -264,28 +263,28 @@ class TeamDetailsPage extends ConsumerWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                color: Colors.redAccent,
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Spacer(),
-                    SizedBox(
-                      width: 300,
-                      child: Text(
-                        "More exciting features coming soon...",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              )
+              // const SizedBox(
+              //   height: 30,
+              // ),
+              // Container(
+              //   color: Colors.redAccent,
+              //   child: const Row(
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       Spacer(),
+              //       SizedBox(
+              //         width: 300,
+              //         child: Text(
+              //           "More exciting features coming soon...",
+              //           textAlign: TextAlign.center,
+              //           style: TextStyle(
+              //               fontSize: 25, fontWeight: FontWeight.bold),
+              //         ),
+              //       ),
+              //       Spacer(),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),
