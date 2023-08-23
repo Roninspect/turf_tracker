@@ -2,26 +2,27 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 
-class Availibilty {
-  String timeId;
-  String turfId;
-  String did;
-  String status;
-  Timestamp date;
-  String dimension;
-  List<TimeTable> oneHalfHourAvailibilty;
-  List<TimeTable> oneHourAvailibilty;
-  Availibilty(
-      {required this.timeId,
-      required this.turfId,
-      required this.did,
-      required this.status,
-      required this.date,
-      required this.dimension,
-      required this.oneHalfHourAvailibilty,
-      required this.oneHourAvailibilty});
+class Availibilty extends Equatable {
+  final String timeId;
+  final String turfId;
+  final String did;
+  final String status;
+  final Timestamp date;
+  final String dimension;
+  final List<TimeTable> oneHalfHourAvailibilty;
+  final List<TimeTable> oneHourAvailibilty;
+  const Availibilty({
+    required this.timeId,
+    required this.turfId,
+    required this.did,
+    required this.status,
+    required this.date,
+    required this.dimension,
+    required this.oneHalfHourAvailibilty,
+    required this.oneHourAvailibilty,
+  });
 
   Availibilty copyWith({
     String? timeId,
@@ -80,9 +81,30 @@ class Availibilty {
       ),
     );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory Availibilty.fromJson(String source) =>
+      Availibilty.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [
+        timeId,
+        turfId,
+        did,
+        status,
+        date,
+        dimension,
+        ...oneHalfHourAvailibilty,
+        ...oneHourAvailibilty,
+      ];
 }
 
-class TimeTable {
+// ignore: must_be_immutable
+class TimeTable extends Equatable {
   bool isAvailable;
   bool isLocked;
   num price;
@@ -138,27 +160,5 @@ class TimeTable {
       TimeTable.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() {
-    return 'TimeTable(isAvailable: $isAvailable, isLocked: $isLocked, price: $price, startTime: $startTime, endTime: $endTime)';
-  }
-
-  @override
-  bool operator ==(covariant TimeTable other) {
-    if (identical(this, other)) return true;
-
-    return other.isAvailable == isAvailable &&
-        other.isLocked == isLocked &&
-        other.price == price &&
-        other.startTime == startTime &&
-        other.endTime == endTime;
-  }
-
-  @override
-  int get hashCode {
-    return isAvailable.hashCode ^
-        isLocked.hashCode ^
-        price.hashCode ^
-        startTime.hashCode ^
-        endTime.hashCode;
-  }
+  List<Object?> get props => [isAvailable, isLocked, price, startTime, endTime];
 }

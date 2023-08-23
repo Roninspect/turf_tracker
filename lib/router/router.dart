@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:turf_tracker/features/auth/pages/forgot_password.dart';
 import 'package:turf_tracker/features/bookings/pages/booking_details_page.dart';
+import 'package:turf_tracker/features/bookings/pages/past_bookings.dart';
 import 'package:turf_tracker/features/profile/pages/edit_profile.dart';
 import 'package:turf_tracker/features/teams/pages/add_mod_page.dart';
 import 'package:turf_tracker/features/teams/pages/create_team_page.dart';
@@ -45,6 +46,7 @@ enum AppRoutes {
   verifyDistrict,
   forgotPassword,
   bookingDetails,
+  bookingsHistory,
   teamFormation,
 }
 
@@ -194,6 +196,13 @@ final routerProvider = Provider<GoRouter>((ref) {
                 bookingModel: booking,
                 bookingId: bookingId,
               );
+            },
+          ),
+          GoRoute(
+            path: 'bookingsHistory',
+            name: AppRoutes.bookingsHistory.name,
+            builder: (context, state) {
+              return const PastBookingsPage();
             },
           ),
         ],

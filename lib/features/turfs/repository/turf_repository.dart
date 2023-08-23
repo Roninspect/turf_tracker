@@ -256,7 +256,7 @@ class TurfRepository {
       return slotType == SlotType.oneHalfHourAvailibilty
           ? right(await _firestore
               .collection('time_availibilty')
-              .doc(selectedAvailibilty.timeId) // Replace with your document ID
+              .doc(selectedAvailibilty.timeId)
               .update({
               'oneHourAvailibilty': newUpdatedOneHOurList
                   .map((timeTable) => timeTable.toMap())

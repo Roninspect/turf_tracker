@@ -15,6 +15,10 @@ class PastBookingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userDataNotifierProvider);
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Bookings History"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -22,7 +26,7 @@ class PastBookingsPage extends ConsumerWidget {
             const SizedBox(height: 20),
             Expanded(
               child: FirestoreListView<Booking>(
-                pageSize: 3,
+                pageSize: 5,
                 query: ref
                     .watch(bookingRepositoryProvider)
                     .getPastBookings(uid: user.uid),
