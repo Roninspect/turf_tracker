@@ -21,6 +21,7 @@ class Booking {
   final String turfId;
   final String whatByWhat;
   final String district;
+  final bool isShared;
   Booking(
       {required this.bookingId,
       required this.bookerid,
@@ -39,7 +40,8 @@ class Booking {
       required this.toBePaidInTurf,
       required this.turfId,
       required this.whatByWhat,
-      required this.district});
+      required this.district,
+      required this.isShared});
 
   Booking copyWith({
     String? bookingId,
@@ -60,27 +62,28 @@ class Booking {
     String? whatByWhat,
     String? turfId,
     String? district,
+    bool? isShared,
   }) {
     return Booking(
-      bookingId: bookingId ?? this.bookingId,
-      bookerid: bookerid ?? this.bookerid,
-      bookerName: bookerName ?? this.bookerName,
-      turfName: turfName ?? this.turfName,
-      turfAddress: turfAddress ?? this.turfAddress,
-      startTime: startTime ?? this.startTime,
-      endTime: endTime ?? this.endTime,
-      date: date ?? this.date,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      transactionId: transactionId ?? this.transactionId,
-      paymentId: paymentId ?? this.paymentId,
-      paymentDateMade: paymentDateMade ?? this.paymentDateMade,
-      totalPrice: totalPrice ?? this.totalPrice,
-      paidInAdvance: paidInAdvance ?? this.paidInAdvance,
-      toBePaidInTurf: toBePaidInTurf ?? this.toBePaidInTurf,
-      whatByWhat: whatByWhat ?? this.whatByWhat,
-      district: district ?? this.district,
-      turfId: turfId ?? this.turfId,
-    );
+        bookingId: bookingId ?? this.bookingId,
+        bookerid: bookerid ?? this.bookerid,
+        bookerName: bookerName ?? this.bookerName,
+        turfName: turfName ?? this.turfName,
+        turfAddress: turfAddress ?? this.turfAddress,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        date: date ?? this.date,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        transactionId: transactionId ?? this.transactionId,
+        paymentId: paymentId ?? this.paymentId,
+        paymentDateMade: paymentDateMade ?? this.paymentDateMade,
+        totalPrice: totalPrice ?? this.totalPrice,
+        paidInAdvance: paidInAdvance ?? this.paidInAdvance,
+        toBePaidInTurf: toBePaidInTurf ?? this.toBePaidInTurf,
+        whatByWhat: whatByWhat ?? this.whatByWhat,
+        district: district ?? this.district,
+        turfId: turfId ?? this.turfId,
+        isShared: isShared ?? this.isShared);
   }
 
   Map<String, dynamic> toMap() {
@@ -103,30 +106,31 @@ class Booking {
       "whatByWhat": whatByWhat,
       "district": district,
       'turfId': turfId,
+      "isShared": isShared,
     };
   }
 
   factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(
-      bookingId: map['bookingId'] as String,
-      bookerid: map['bookerid'] as String,
-      bookerName: map['bookerName'] as String,
-      turfName: map['turfName'] as String,
-      turfAddress: map['turfAddress'] as String,
-      startTime: map["startTime"] as Timestamp,
-      endTime: map["endTime"] as Timestamp,
-      date: map['date'] as Timestamp,
-      phoneNumber: map['phoneNumber'] as String,
-      transactionId: map['transactionId'] as String,
-      paymentId: map['paymentId'] as String,
-      paymentDateMade: map['paymentDateMade'] as String,
-      totalPrice: map['totalPrice'] as num,
-      paidInAdvance: map['paidInAdvance'] as num,
-      toBePaidInTurf: map['toBePaidInTurf'] as num,
-      whatByWhat: map['whatByWhat'] as String,
-      district: map['district'] as String,
-      turfId: map['turfId'] as String,
-    );
+        bookingId: map['bookingId'] as String,
+        bookerid: map['bookerid'] as String,
+        bookerName: map['bookerName'] as String,
+        turfName: map['turfName'] as String,
+        turfAddress: map['turfAddress'] as String,
+        startTime: map["startTime"] as Timestamp,
+        endTime: map["endTime"] as Timestamp,
+        date: map['date'] as Timestamp,
+        phoneNumber: map['phoneNumber'] as String,
+        transactionId: map['transactionId'] as String,
+        paymentId: map['paymentId'] as String,
+        paymentDateMade: map['paymentDateMade'] as String,
+        totalPrice: map['totalPrice'] as num,
+        paidInAdvance: map['paidInAdvance'] as num,
+        toBePaidInTurf: map['toBePaidInTurf'] as num,
+        whatByWhat: map['whatByWhat'] as String,
+        district: map['district'] as String,
+        turfId: map['turfId'] as String,
+        isShared: map["isShared"]);
   }
 
   String toJson() => json.encode(toMap());
@@ -154,7 +158,8 @@ class Booking {
         other.paidInAdvance == paidInAdvance &&
         other.toBePaidInTurf == toBePaidInTurf &&
         other.whatByWhat == whatByWhat &&
-        other.turfId == turfId;
+        other.turfId == turfId &&
+        other.isShared == isShared;
   }
 
   @override
@@ -175,6 +180,7 @@ class Booking {
         paidInAdvance.hashCode ^
         toBePaidInTurf.hashCode ^
         whatByWhat.hashCode ^
-        turfId.hashCode;
+        turfId.hashCode ^
+        isShared.hashCode;
   }
 }

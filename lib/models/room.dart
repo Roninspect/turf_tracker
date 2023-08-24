@@ -8,6 +8,7 @@ class Room {
   final String uid;
   final bool isActive;
   final String bookerNumber;
+  final String bookingId;
   final String turfId;
   final String turfName;
   final String turfAddress;
@@ -17,11 +18,13 @@ class Room {
   final Timestamp endTime;
   final num totalPrice;
   final String district;
+
   Room({
     required this.roomId,
     required this.uid,
     required this.isActive,
     required this.bookerNumber,
+    required this.bookingId,
     required this.turfId,
     required this.turfName,
     required this.turfAddress,
@@ -33,26 +36,27 @@ class Room {
     required this.district,
   });
 
-  Room copyWith({
-    String? roomId,
-    String? uid,
-    bool? isActive,
-    String? bookerNumber,
-    String? turfId,
-    String? turfName,
-    String? turfAddress,
-    String? dimension,
-    String? bookedBy,
-    Timestamp? startTime,
-    Timestamp? endTime,
-    num? totalPrice,
-    String? district,
-  }) {
+  Room copyWith(
+      {String? roomId,
+      String? uid,
+      bool? isActive,
+      String? bookerNumber,
+      String? turfId,
+      String? turfName,
+      String? turfAddress,
+      String? dimension,
+      String? bookedBy,
+      Timestamp? startTime,
+      Timestamp? endTime,
+      num? totalPrice,
+      String? district,
+      String? bookingId}) {
     return Room(
       roomId: roomId ?? this.roomId,
       uid: uid ?? this.uid,
       isActive: isActive ?? this.isActive,
       bookerNumber: bookerNumber ?? this.bookerNumber,
+      bookingId: bookingId ?? this.bookingId,
       turfId: turfId ?? this.turfId,
       turfName: turfName ?? this.turfName,
       turfAddress: turfAddress ?? this.turfAddress,
@@ -71,6 +75,7 @@ class Room {
       'uid': uid,
       'isActive': isActive,
       'bookerNumber': bookerNumber,
+      "bookingId": bookingId,
       'turfId': turfId,
       'turfName': turfName,
       'turfAddress': turfAddress,
@@ -89,6 +94,7 @@ class Room {
       uid: map['uid'] as String,
       isActive: map['isActive'] as bool,
       bookerNumber: map['bookerNumber'] as String,
+      bookingId: map['bookingId'] as String,
       turfId: map['turfId'] as String,
       turfName: map['turfName'] as String,
       turfAddress: map['turfAddress'] as String,
@@ -119,6 +125,7 @@ class Room {
         other.uid == uid &&
         other.isActive == isActive &&
         other.bookerNumber == bookerNumber &&
+        other.bookingId == bookingId &&
         other.turfId == turfId &&
         other.turfName == turfName &&
         other.turfAddress == turfAddress &&
@@ -136,6 +143,7 @@ class Room {
         uid.hashCode ^
         isActive.hashCode ^
         bookerNumber.hashCode ^
+        bookingId.hashCode ^
         turfId.hashCode ^
         turfName.hashCode ^
         turfAddress.hashCode ^

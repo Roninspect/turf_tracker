@@ -49,21 +49,25 @@ class AllRoomsPage extends ConsumerWidget {
                 .watch(getAllActiveRoomsByDistrictProvider(selectedDistrict))
                 .when(
                   data: (rooms) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: rooms.length,
-                        itemBuilder: (context, index) {
-                          final Room room = rooms[index];
+                    return rooms.isNotEmpty
+                        ? Expanded(
+                            child: ListView.builder(
+                              itemCount: rooms.length,
+                              itemBuilder: (context, index) {
+                                final Room room = rooms[index];
 
-                          return RoomsCard(
-                            room: room,
-                          );
-                        },
-                      ),
-                    );
+                                return RoomsCard(
+                                  room: room,
+                                );
+                              },
+                            ),
+                          )
+                        : const Expanded(
+                            child: Center(
+                            child: Text("No Active Rooms"),
+                          ));
                   },
                   error: (error, stackTrace) {
-                    print(stackTrace);
                     return Center(
                       child: Text(error.toString()),
                     );

@@ -5,6 +5,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:turf_tracker/common/failure.dart';
 import 'package:turf_tracker/common/typedefs.dart';
 import 'package:turf_tracker/models/booking.dart';
+import 'package:turf_tracker/models/room.dart';
 
 final bookingRepositoryProvider = Provider<BookingRepository>((ref) {
   return BookingRepository(firestore: FirebaseFirestore.instance);
@@ -65,5 +66,15 @@ class BookingRepository {
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  //** isShared checking */
+
+  Stream<List<Room>> isSharedAlready({required String bookingId}) {
+    return _firestore
+        .collection("rooms")
+        .where("bookingId", isEqualTo: bookingId)
+        .snapshots()
+        .map((event) => event.docs.map((e) => Room.fromMap(e.data())).toList());
   }
 }

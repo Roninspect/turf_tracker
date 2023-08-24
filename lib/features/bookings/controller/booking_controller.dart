@@ -5,12 +5,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/common/custom_snackbar.dart';
 import 'package:turf_tracker/features/bookings/repository/booking_repository.dart';
+import 'package:turf_tracker/models/room.dart';
 import '../../../models/booking.dart';
 
 final bookingControllerProvider =
     StateNotifierProvider<BookingController, bool>((ref) {
   return BookingController(
       bookingRepository: ref.watch(bookingRepositoryProvider), ref: ref);
+});
+
+final isSharedAlreadyProvider =
+    StreamProvider.family<List<Room>, String>((ref, bookingId) {
+  return ref
+      .watch(bookingControllerProvider.notifier)
+      .isSharedAlready(bookingId: bookingId);
 });
 
 class BookingController extends StateNotifier<bool> {
@@ -46,5 +54,11 @@ class BookingController extends StateNotifier<bool> {
 
     res.fold(
         (l) => showSnackbar(context: context, text: l.message), (r) => null);
+  }
+
+  //** isShared checking */
+
+  Stream<List<Room>> isSharedAlready({required String bookingId}) {
+    return bookingRepository.isSharedAlready(bookingId: bookingId);
   }
 }

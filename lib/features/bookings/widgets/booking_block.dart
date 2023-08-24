@@ -1,12 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:turf_tracker/features/rooms/controller/room_controller.dart';
 import 'package:turf_tracker/models/booking.dart';
+import 'package:turf_tracker/models/room.dart';
 import 'package:turf_tracker/router/router.dart';
 import '../../../common/colors.dart';
+import '../controller/booking_controller.dart';
 
 class BookingTile extends ConsumerWidget {
   final Booking booking;
@@ -104,32 +105,58 @@ class BookingTile extends ConsumerWidget {
                       Row(
                         children: [
                           const SizedBox(width: 60),
-                          IconButton(
-                              tooltip: "Share this to Active Rooms",
-                              onPressed: () {
-                                ref
-                                    .read(roomControllerProvider.notifier)
-                                    .shareMatchInRoom(
-                                        bookerNumber: booking.phoneNumber,
-                                        turfId: booking.turfId,
-                                        turfName: booking.turfName,
-                                        turfAddress: booking.turfAddress,
-                                        dimension: booking.whatByWhat,
-                                        bookedBy: booking.bookerName,
-                                        startTime: booking.startTime,
-                                        endTime: booking.endTime,
-                                        district: booking.district,
-                                        totalPrice: booking.totalPrice,
-                                        context: context);
-                              },
-                              icon: isLoading
-                                  ? const CircularProgressIndicator(
-                                      color: cardColor,
-                                    )
-                                  : const Icon(
-                                      Icons.share,
-                                      color: cardColor,
-                                    )),
+                          ref
+                              .watch(isSharedAlreadyProvider(booking.bookingId))
+                              .when(
+                                data: (rooms) {
+                                  return rooms.isEmpty
+                                      ? IconButton(
+                                          tooltip: "Share this to Active Rooms",
+                                          onPressed: () {
+                                            ref
+                                                .read(roomControllerProvider
+                                                    .notifier)
+                                                .shareMatchInRoom(
+                                                    bookerNumber:
+                                                        booking.phoneNumber,
+                                                    turfId: booking.turfId,
+                                                    turfName: booking.turfName,
+                                                    turfAddress:
+                                                        booking.turfAddress,
+                                                    bookingId:
+                                                        booking.bookingId,
+                                                    dimension:
+                                                        booking.whatByWhat,
+                                                    bookedBy:
+                                                        booking.bookerName,
+                                                    startTime:
+                                                        booking.startTime,
+                                                    endTime: booking.endTime,
+                                                    district: booking.district,
+                                                    totalPrice:
+                                                        booking.totalPrice,
+                                                    context: context);
+                                          },
+                                          icon: isLoading
+                                              ? const CircularProgressIndicator(
+                                                  color: cardColor,
+                                                )
+                                              : const Icon(
+                                                  Icons.share,
+                                                  color: cardColor,
+                                                ))
+                                      : const SizedBox.shrink();
+                                },
+                                error: (error, stackTrace) {
+                                  print(stackTrace);
+                                  return Center(
+                                    child: Text(error.toString()),
+                                  );
+                                },
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
                         ],
                       )
                     ],

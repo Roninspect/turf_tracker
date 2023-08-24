@@ -291,7 +291,8 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                         paidInAdvance: advancePaid,
                         toBePaidInTurf: toBePaidInTurf,
                         district: widget.turf.district,
-                        turfId: widget.turf.turfId),
+                        turfId: widget.turf.turfId,
+                        isShared: false),
                     context: context);
 
             //   //** invalidating or resetting the selected data */

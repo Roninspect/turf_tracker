@@ -158,19 +158,19 @@ class RoomsCard extends ConsumerWidget {
                                     style: TextStyle(color: Colors.white),
                                   ))
                               : room.isActive && room.uid == user.uid
-                                  ? ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                          minimumSize: const Size(0, 40)),
-                                      onPressed: () => ref
+                                  ? GestureDetector(
+                                      onTap: () => ref
                                           .read(roomControllerProvider.notifier)
                                           .cancelRoom(
                                             roomId: room.roomId,
                                             context: context,
                                           ),
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Colors.white,
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(left: 50.0),
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: Colors.redAccent,
+                                        ),
                                       ))
                                   : const SizedBox.shrink(),
                           const SizedBox(width: 10),
