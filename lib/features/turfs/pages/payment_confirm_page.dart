@@ -1,13 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bkash/flutter_bkash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:turf_tracker/common/colors.dart';
+import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/turfs/provider/slot_type_selector_provider.dart';
 import 'package:turf_tracker/models/turf.dart';
+import 'package:uuid/uuid.dart';
+import '../../../models/booking.dart';
+import '../../bookings/controller/booking_controller.dart';
 import '../controller/turf_controller.dart';
 import '../provider/availbilty_provider.dart';
 import '../provider/dimension_selector_provider.dart';
@@ -75,8 +80,14 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     final timelist = ref.watch(selectedTimeTableNotifierProvider);
     final dimensionSlected = ref.watch(dimensionSelectionNotifierProvider);
     final selectedSlotType = ref.watch(slotTypeNotifierProvider);
+    final user = ref.watch(userDataNotifierProvider);
 
-    // Use DateFormat to format the date, month, and weekday
+    //* formatting selectedTime
+    final startTime =
+        DateFormat("hh:mm a").format(timelist!.startTime.toDate());
+    final endTime = DateFormat("hh:mm a").format(timelist.endTime.toDate());
+
+    //* Use DateFormat to format the date, month, and weekday
     DateTime dateTime = avalibilty.date.toDate();
 
     String formattedMonth = DateFormat('MMMM').format(avalibilty.date.toDate());
@@ -103,14 +114,10 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
 
     String finalFormat = '$formattedDay $formattedMonth, $formattedWeekday';
 
-    num totalPrice = 0;
-    // num advancePaid = 200 * timelist.length;
+    num totalPrice = timelist.price;
+    num advancePaid = 500;
 
-    // for (var price in timelist) {
-    //   totalPrice += price.price;
-    // }
-
-    // num toBePaidInTurf = totalPrice - advancePaid;
+    num toBePaidInTurf = totalPrice - advancePaid;
 
     return WillPopScope(
       onWillPop: () async {
@@ -165,28 +172,30 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Selectes Time Slots:",
+                    "Starting Time:",
                     style: TextStyle(fontSize: 20),
                   ),
-                  // SizedBox(
-                  //   width: 90,
-                  //   child: ListView.builder(
-                  //     shrinkWrap: true,
-                  //     itemCount: timelist.length,
-                  //     itemBuilder: (context, index) {
-                  //       final singleSelectedTime = timelist[index];
-                  //       // final timeOnly = DateFormat('h:mm a')
-                  //       //     .format(singleSelectedTime.time.toDate());
-                  //       // return Text(
-                  //       //   timeOnly,
-                  //       //   style: const TextStyle(fontSize: 20),
-                  //       // );
-                  //     },
-                  //   ),
-                  // )
+                  Text(
+                    startTime,
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Ending Time:",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    endTime,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -200,6 +209,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                   ),
                 ],
               ),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -207,12 +217,13 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                     "Advance(To book the slots):",
                     style: TextStyle(fontSize: 20),
                   ),
-                  // Text(
-                  //   "BDT $advancePaid",
-                  //   style: const TextStyle(fontSize: 20),
-                  // ),
+                  Text(
+                    "BDT $advancePaid",
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ],
               ),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -220,10 +231,10 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                     "Give to the turf (in person)",
                     style: TextStyle(fontSize: 20),
                   ),
-                  // Text(
-                  //   "BDT ${totalPrice - advancePaid}",
-                  //   style: const TextStyle(fontSize: 20),
-                  // ),
+                  Text(
+                    "BDT ${totalPrice - advancePaid}",
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
@@ -235,7 +246,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
           backgroundColor: greenColor,
           onPressed: () async {
             ref.read(turfControllerProvider).updateTimeSlotAfterBooking(
-                selectedSlot: timelist!,
+                selectedSlot: timelist,
                 slotType: selectedSlotType!,
                 selectedAvailibilty: avalibilty,
                 context: context);
@@ -258,34 +269,29 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
             //   showSnackbar(
             //       context: context, text: "Please Select Date and Time Slot");
             // } else {
-            // //** saving the updated data to firestore */
-            // ref.read(turfControllerProvider).updateAvailibiltyStatus(
-            //       context: context,
-            //       updatedTimetables: timelist,
-            //       timetableIndices: listofIndices,
-            //       timeId: avalibilty.timeId,
-            //     );
 
-            // ref
-            //     .read(bookingControllerProvider.notifier)
-            //     .saveBookingDataToFirestore(
-            //         bookingModel: Booking(
-            //             bookingId: const Uuid().v4(),
-            //             bookerid: user.uid,
-            //             bookerName: user.name,
-            //             turfName: widget.turf.name,
-            //             turfAddress: widget.turf.address,
-            //             selectedTimeSlots: timelist.map((e) => e.time).toList(),
-            //             date: Timestamp.now(),
-            //             phoneNumber: user.phoneNumber,
-            //             transactionId: const Uuid().v4(),
-            //             paymentId: const Uuid().v4(),
-            //             paymentDateMade: Timestamp.now().toString(),
-            //             totalPrice: totalPrice,
-            //             paidInAdvance: advancePaid,
-            //             toBePaidInTurf: toBePaidInTurf,
-            //             turfId: widget.turf.turfId),
-            //         context: context);
+            ref
+                .read(bookingControllerProvider.notifier)
+                .saveBookingDataToFirestore(
+                    bookingModel: Booking(
+                        bookingId: const Uuid().v4(),
+                        bookerid: user.uid,
+                        bookerName: user.name,
+                        turfName: widget.turf.name,
+                        turfAddress: widget.turf.address,
+                        startTime: timelist.startTime,
+                        endTime: timelist.endTime,
+                        whatByWhat: dimensionSlected,
+                        date: timelist.startTime,
+                        phoneNumber: user.phoneNumber,
+                        transactionId: const Uuid().v4(),
+                        paymentId: const Uuid().v4(),
+                        paymentDateMade: Timestamp.now().toString(),
+                        totalPrice: totalPrice,
+                        paidInAdvance: advancePaid,
+                        toBePaidInTurf: toBePaidInTurf,
+                        turfId: widget.turf.turfId),
+                    context: context);
 
             //   //** invalidating or resetting the selected data */
             // ref.invalidate(availibiltyNotifierProvider);

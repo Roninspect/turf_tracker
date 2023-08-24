@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:go_router/go_router.dart';
+import 'package:turf_tracker/router/router.dart';
 
 import '../../../common/colors.dart';
 
@@ -136,11 +138,11 @@ class RoomsCard extends ConsumerWidget {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: greenColor,
                                   minimumSize: const Size(0, 40)),
-                              onPressed: () {},
-                              child: const Icon(
-                                Icons.keyboard_arrow_right_outlined,
-                                color: Colors.white,
-                                size: 35,
+                              onPressed: () => context
+                                  .pushNamed(AppRoutes.confirmRoomPage.name),
+                              child: const Text(
+                                "Join",
+                                style: TextStyle(color: Colors.white),
                               )),
                         ],
                       ),

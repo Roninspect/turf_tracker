@@ -39,149 +39,119 @@ class BookingDetailsPage extends ConsumerWidget {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          children: [
-            const Text(
-              "Payment Details",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Text(
+                "Payment Details",
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              ),
+              ListTile(
+                title: const Text(
                   "Booked By: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Text(
+                subtitle: Text(
                   bookingModel.bookerName,
-                  style: const TextStyle(fontSize: 20),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+              ),
+              ListTile(
+                title: const Text(
                   "Booking Id: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                subtitle: SizedBox(
                   width: 250,
                   child: Text(
                     bookingModel.bookingId,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 15),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+              ),
+              ListTile(
+                title: const Text(
                   "Turf Name: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Text(
+                subtitle: Text(
                   bookingModel.turfName,
-                  style: const TextStyle(fontSize: 20),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+              ),
+              ListTile(
+                title: const Text(
                   "Payment Made At: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
-                  width: 200,
+                subtitle: SizedBox(
+                  width: 150,
                   child: Text(
                     formattedDate,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 15),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+              ),
+              ListTile(
+                title: const Text(
                   "Payment Id: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                subtitle: SizedBox(
                   width: 200,
                   child: Text(
                     bookingModel.paymentId,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 15),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+              ),
+              ListTile(
+                title: const Text(
                   "Transaction Id: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                subtitle: SizedBox(
                   width: 200,
                   child: Text(
                     bookingModel.transactionId,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 15),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+              ),
+              ListTile(
+                title: const Text(
                   "Paid in Advance: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Text(
+                subtitle: Text(
                   "BDT ${bookingModel.paidInAdvance}",
-                  style: const TextStyle(fontSize: 20),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
+              ),
+              ListTile(
+                title: const Text(
                   "Total value: ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                subtitle: SizedBox(
                   width: 200,
                   child: Text(
                     "BDT ${bookingModel.totalPrice}",
-                    style: const TextStyle(fontSize: 20),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Text(
+              ),
+              ListTile(
+                title: Text(
                   "$paymentStatus: ",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                subtitle: SizedBox(
                   width: 200,
                   child: Text(
                     "BDT ${bookingModel.toBePaidInTurf}",
-                    style: const TextStyle(fontSize: 20),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

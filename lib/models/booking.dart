@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class Booking {
   final String bookingId;
@@ -10,7 +8,8 @@ class Booking {
   final String bookerName;
   final String turfName;
   final String turfAddress;
-  final List<Timestamp> selectedTimeSlots;
+  final Timestamp startTime;
+  final Timestamp endTime;
   final Timestamp date;
   final String phoneNumber;
   final String transactionId;
@@ -20,13 +19,15 @@ class Booking {
   final num paidInAdvance;
   final num toBePaidInTurf;
   final String turfId;
+  final String whatByWhat;
   Booking({
     required this.bookingId,
     required this.bookerid,
     required this.bookerName,
     required this.turfName,
     required this.turfAddress,
-    required this.selectedTimeSlots,
+    required this.startTime,
+    required this.endTime,
     required this.date,
     required this.phoneNumber,
     required this.transactionId,
@@ -36,6 +37,7 @@ class Booking {
     required this.paidInAdvance,
     required this.toBePaidInTurf,
     required this.turfId,
+    required this.whatByWhat,
   });
 
   Booking copyWith({
@@ -44,7 +46,8 @@ class Booking {
     String? bookerName,
     String? turfName,
     String? turfAddress,
-    List<Timestamp>? selectedTimeSlots,
+    Timestamp? startTime,
+    Timestamp? endTime,
     Timestamp? date,
     String? phoneNumber,
     String? transactionId,
@@ -53,6 +56,7 @@ class Booking {
     num? totalPrice,
     num? paidInAdvance,
     num? toBePaidInTurf,
+    String? whatByWhat,
     String? turfId,
   }) {
     return Booking(
@@ -61,7 +65,8 @@ class Booking {
       bookerName: bookerName ?? this.bookerName,
       turfName: turfName ?? this.turfName,
       turfAddress: turfAddress ?? this.turfAddress,
-      selectedTimeSlots: selectedTimeSlots ?? this.selectedTimeSlots,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
       date: date ?? this.date,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       transactionId: transactionId ?? this.transactionId,
@@ -70,6 +75,7 @@ class Booking {
       totalPrice: totalPrice ?? this.totalPrice,
       paidInAdvance: paidInAdvance ?? this.paidInAdvance,
       toBePaidInTurf: toBePaidInTurf ?? this.toBePaidInTurf,
+      whatByWhat: whatByWhat ?? this.whatByWhat,
       turfId: turfId ?? this.turfId,
     );
   }
@@ -81,7 +87,8 @@ class Booking {
       'bookerName': bookerName,
       'turfName': turfName,
       'turfAddress': turfAddress,
-      'selectedTimeSlots': selectedTimeSlots.map((x) => x).toList(),
+      "startTime": startTime,
+      "endTime": endTime,
       'date': date,
       'phoneNumber': phoneNumber,
       'transactionId': transactionId,
@@ -90,6 +97,7 @@ class Booking {
       'totalPrice': totalPrice,
       'paidInAdvance': paidInAdvance,
       'toBePaidInTurf': toBePaidInTurf,
+      "whatByWhat": whatByWhat,
       'turfId': turfId,
     };
   }
@@ -101,11 +109,8 @@ class Booking {
       bookerName: map['bookerName'] as String,
       turfName: map['turfName'] as String,
       turfAddress: map['turfAddress'] as String,
-      selectedTimeSlots: List<Timestamp>.from(
-        (map['selectedTimeSlots'] as List<dynamic>).map<Timestamp>(
-          (x) => x as Timestamp,
-        ),
-      ),
+      startTime: map["startTime"] as Timestamp,
+      endTime: map["endTime"] as Timestamp,
       date: map['date'] as Timestamp,
       phoneNumber: map['phoneNumber'] as String,
       transactionId: map['transactionId'] as String,
@@ -114,6 +119,7 @@ class Booking {
       totalPrice: map['totalPrice'] as num,
       paidInAdvance: map['paidInAdvance'] as num,
       toBePaidInTurf: map['toBePaidInTurf'] as num,
+      whatByWhat: map['whatByWhat'] as String,
       turfId: map['turfId'] as String,
     );
   }
@@ -124,11 +130,6 @@ class Booking {
       Booking.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() {
-    return 'Booking(bookingId: $bookingId, bookerid: $bookerid, bookerName: $bookerName, turfName: $turfName, turfAddress: $turfAddress, selectedTimeSlots: $selectedTimeSlots, date: $date, phoneNumber: $phoneNumber, transactionId: $transactionId, paymentId: $paymentId, paymentDateMade: $paymentDateMade, totalPrice: $totalPrice, paidInAdvance: $paidInAdvance, toBePaidInTurf: $toBePaidInTurf, turfId: $turfId)';
-  }
-
-  @override
   bool operator ==(covariant Booking other) {
     if (identical(this, other)) return true;
 
@@ -137,7 +138,8 @@ class Booking {
         other.bookerName == bookerName &&
         other.turfName == turfName &&
         other.turfAddress == turfAddress &&
-        listEquals(other.selectedTimeSlots, selectedTimeSlots) &&
+        other.startTime == startTime &&
+        other.endTime == endTime &&
         other.date == date &&
         other.phoneNumber == phoneNumber &&
         other.transactionId == transactionId &&
@@ -146,6 +148,7 @@ class Booking {
         other.totalPrice == totalPrice &&
         other.paidInAdvance == paidInAdvance &&
         other.toBePaidInTurf == toBePaidInTurf &&
+        other.whatByWhat == whatByWhat &&
         other.turfId == turfId;
   }
 
@@ -156,7 +159,8 @@ class Booking {
         bookerName.hashCode ^
         turfName.hashCode ^
         turfAddress.hashCode ^
-        selectedTimeSlots.hashCode ^
+        startTime.hashCode ^
+        endTime.hashCode ^
         date.hashCode ^
         phoneNumber.hashCode ^
         transactionId.hashCode ^
@@ -165,6 +169,7 @@ class Booking {
         totalPrice.hashCode ^
         paidInAdvance.hashCode ^
         toBePaidInTurf.hashCode ^
+        whatByWhat.hashCode ^
         turfId.hashCode;
   }
 }

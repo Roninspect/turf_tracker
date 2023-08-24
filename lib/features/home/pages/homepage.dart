@@ -60,27 +60,40 @@ class _HomePageState extends ConsumerState<HomePage> {
               ],
             ),
           ]),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //** upcoming matches Listview */
-              Text(
-                "Upcoming",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Upcoming",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "See All",
+                        style: TextStyle(
+                          color: greenColor,
+                        ),
+                      ))
+                ],
               ),
-              SizedBox(height: 10),
-              UpcomingMatches(),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
+              const UpcomingMatches(),
+              const SizedBox(height: 20),
 
               //** favorite turfs Listview */
-              Text(
+              const Text(
                 "Your favorites",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              FavoriteTurfListView(),
+              const FavoriteTurfListView(),
             ],
           ),
         ),

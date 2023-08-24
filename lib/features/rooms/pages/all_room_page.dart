@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:turf_tracker/features/bookings/widgets/rooms_block.dart';
+import 'package:turf_tracker/features/rooms/widgets/rooms_block.dart';
 
 class AllRoomsPage extends ConsumerWidget {
   const AllRoomsPage({super.key});
