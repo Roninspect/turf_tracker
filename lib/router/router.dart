@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:turf_tracker/features/auth/pages/forgot_password.dart';
 import 'package:turf_tracker/features/bookings/pages/booking_details_page.dart';
 import 'package:turf_tracker/features/bookings/pages/past_bookings.dart';
+import 'package:turf_tracker/features/bookings/pages/upcoming_page.dart';
+import 'package:turf_tracker/features/home/widgets/upcoming_list_view.dart';
 import 'package:turf_tracker/features/profile/pages/edit_profile.dart';
 import 'package:turf_tracker/features/rooms/pages/confirm_room_page.dart';
 import 'package:turf_tracker/features/teams/pages/add_mod_page.dart';
@@ -48,6 +50,7 @@ enum AppRoutes {
   forgotPassword,
   bookingDetails,
   bookingsHistory,
+  upcomingBookings,
   teamFormation,
   confirmRoomPage
 }
@@ -205,6 +208,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: AppRoutes.bookingsHistory.name,
             builder: (context, state) {
               return const PastBookingsPage();
+            },
+          ),
+          GoRoute(
+            path: 'upcomingBookings',
+            name: AppRoutes.upcomingBookings.name,
+            builder: (context, state) {
+              return const UpComingPage();
             },
           ),
           GoRoute(

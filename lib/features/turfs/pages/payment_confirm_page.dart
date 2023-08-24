@@ -290,6 +290,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                         totalPrice: totalPrice,
                         paidInAdvance: advancePaid,
                         toBePaidInTurf: toBePaidInTurf,
+                        district: widget.turf.district,
                         turfId: widget.turf.turfId),
                     context: context);
 

@@ -58,7 +58,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: greenColor)),
             contentPadding: const EdgeInsets.only(top: 10),
-            hintText: "Search Team",
+            hintText: "Search Team (in LowerCase)",
             hintStyle: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 17,

@@ -20,25 +20,26 @@ class Booking {
   final num toBePaidInTurf;
   final String turfId;
   final String whatByWhat;
-  Booking({
-    required this.bookingId,
-    required this.bookerid,
-    required this.bookerName,
-    required this.turfName,
-    required this.turfAddress,
-    required this.startTime,
-    required this.endTime,
-    required this.date,
-    required this.phoneNumber,
-    required this.transactionId,
-    required this.paymentId,
-    required this.paymentDateMade,
-    required this.totalPrice,
-    required this.paidInAdvance,
-    required this.toBePaidInTurf,
-    required this.turfId,
-    required this.whatByWhat,
-  });
+  final String district;
+  Booking(
+      {required this.bookingId,
+      required this.bookerid,
+      required this.bookerName,
+      required this.turfName,
+      required this.turfAddress,
+      required this.startTime,
+      required this.endTime,
+      required this.date,
+      required this.phoneNumber,
+      required this.transactionId,
+      required this.paymentId,
+      required this.paymentDateMade,
+      required this.totalPrice,
+      required this.paidInAdvance,
+      required this.toBePaidInTurf,
+      required this.turfId,
+      required this.whatByWhat,
+      required this.district});
 
   Booking copyWith({
     String? bookingId,
@@ -58,6 +59,7 @@ class Booking {
     num? toBePaidInTurf,
     String? whatByWhat,
     String? turfId,
+    String? district,
   }) {
     return Booking(
       bookingId: bookingId ?? this.bookingId,
@@ -76,6 +78,7 @@ class Booking {
       paidInAdvance: paidInAdvance ?? this.paidInAdvance,
       toBePaidInTurf: toBePaidInTurf ?? this.toBePaidInTurf,
       whatByWhat: whatByWhat ?? this.whatByWhat,
+      district: district ?? this.district,
       turfId: turfId ?? this.turfId,
     );
   }
@@ -98,6 +101,7 @@ class Booking {
       'paidInAdvance': paidInAdvance,
       'toBePaidInTurf': toBePaidInTurf,
       "whatByWhat": whatByWhat,
+      "district": district,
       'turfId': turfId,
     };
   }
@@ -120,6 +124,7 @@ class Booking {
       paidInAdvance: map['paidInAdvance'] as num,
       toBePaidInTurf: map['toBePaidInTurf'] as num,
       whatByWhat: map['whatByWhat'] as String,
+      district: map['district'] as String,
       turfId: map['turfId'] as String,
     );
   }

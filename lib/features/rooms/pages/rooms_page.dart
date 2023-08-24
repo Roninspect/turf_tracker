@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/features/rooms/pages/all_room_page.dart';
+import 'package:turf_tracker/features/rooms/pages/inactiveRoomsPage.dart';
+import 'package:turf_tracker/features/rooms/pages/my_rooms_page.dart';
 
 class RoomsPage extends ConsumerWidget {
   const RoomsPage({super.key});
@@ -48,7 +50,7 @@ class RoomsPage extends ConsumerWidget {
                       ),
                       Tab(
                         icon: Text(
-                          "Your Rooms",
+                          "My Rooms",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
@@ -64,8 +66,8 @@ class RoomsPage extends ConsumerWidget {
                 Expanded(
                   child: TabBarView(children: [
                     AllRoomsPage(),
-                    AllRoomsPage(),
-                    AllRoomsPage(),
+                    MyRoomsPage(),
+                    AllInactiveRoomsPage(),
                   ]),
                 )
               ],

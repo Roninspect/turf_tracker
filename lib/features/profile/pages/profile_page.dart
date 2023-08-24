@@ -12,6 +12,7 @@ import 'package:turf_tracker/common/show_dialog.dart';
 import 'package:turf_tracker/features/auth/provider/district_provider.dart';
 import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/profile/controller/profile_controller.dart';
+import 'package:turf_tracker/features/rooms/controller/room_controller.dart';
 import 'package:turf_tracker/features/root/provider/nav_controller.dart';
 
 import '../../../common/filepicker.dart';
@@ -272,6 +273,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         districtChangeNotifierProvider);
                                     ref.invalidate(
                                         registerDistrictSelectingNotifierProvider);
+                                    ref.invalidate(getMyRoomsProvider);
                                   });
                             },
                             child: const Text(

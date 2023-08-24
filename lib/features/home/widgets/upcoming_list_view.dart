@@ -17,7 +17,7 @@ class UpcomingMatches extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userDataNotifierProvider);
     return SizedBox(
-      height: 130,
+      height: 160,
       child: FirestoreListView<Booking>(
         padding: EdgeInsets.zero,
         scrollDirection: Axis.horizontal,

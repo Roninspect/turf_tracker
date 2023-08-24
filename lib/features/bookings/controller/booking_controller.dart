@@ -3,11 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/common/colors.dart';
-
 import 'package:turf_tracker/common/custom_snackbar.dart';
 import 'package:turf_tracker/features/bookings/repository/booking_repository.dart';
-import 'package:turf_tracker/features/turfs/controller/turf_controller.dart';
-
 import '../../../models/booking.dart';
 
 final bookingControllerProvider =

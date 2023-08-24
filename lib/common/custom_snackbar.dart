@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 showSnackbar(
     {required BuildContext context,
     required String text,
-    Color? color = Colors.red}) {
+    Color? color = Colors.green}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       // behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 4),

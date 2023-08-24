@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
+import 'package:turf_tracker/features/rooms/controller/room_controller.dart';
 import 'package:turf_tracker/models/booking.dart';
 import 'package:turf_tracker/router/router.dart';
-
 import '../../../common/colors.dart';
 
 class BookingTile extends ConsumerWidget {
@@ -18,6 +17,7 @@ class BookingTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bool isLoading = ref.watch(roomControllerProvider);
     DateTime dateTime = booking.date.toDate();
 
     String formattedDate = DateFormat('MMMM').format(dateTime);
@@ -46,7 +46,7 @@ class BookingTile extends ConsumerWidget {
       padding: const EdgeInsets.only(right: 8.0),
       child: SizedBox(
         width: 350,
-        height: 200,
+        height: 220,
         child: GestureDetector(
           onTap: () {
             context.pushNamed(AppRoutes.bookingDetails.name,
@@ -100,7 +100,38 @@ class BookingTile extends ConsumerWidget {
                       ),
                       Text(formattedTime),
                       Text(finalFormat),
-                      const SizedBox(height: 10)
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const SizedBox(width: 60),
+                          IconButton(
+                              tooltip: "Share this to Active Rooms",
+                              onPressed: () {
+                                ref
+                                    .read(roomControllerProvider.notifier)
+                                    .shareMatchInRoom(
+                                        bookerNumber: booking.phoneNumber,
+                                        turfId: booking.turfId,
+                                        turfName: booking.turfName,
+                                        turfAddress: booking.turfAddress,
+                                        dimension: booking.whatByWhat,
+                                        bookedBy: booking.bookerName,
+                                        startTime: booking.startTime,
+                                        endTime: booking.endTime,
+                                        district: booking.district,
+                                        totalPrice: booking.totalPrice,
+                                        context: context);
+                              },
+                              icon: isLoading
+                                  ? const CircularProgressIndicator(
+                                      color: cardColor,
+                                    )
+                                  : const Icon(
+                                      Icons.share,
+                                      color: cardColor,
+                                    )),
+                        ],
+                      )
                     ],
                   ),
                 ),

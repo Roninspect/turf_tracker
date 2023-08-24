@@ -2,8 +2,6 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/bookings/repository/booking_repository.dart';
 import 'package:turf_tracker/features/bookings/widgets/booking_block.dart';
@@ -16,6 +14,10 @@ class UpComingPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userDataNotifierProvider);
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Upcoming"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -31,7 +33,7 @@ class UpComingPage extends ConsumerWidget {
                   Booking booking = doc.data();
 
                   return SizedBox(
-                      height: 130,
+                      height: 170,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: BookingTile(booking: booking),
@@ -44,7 +46,7 @@ class UpComingPage extends ConsumerWidget {
                   if (kDebugMode) {
                     print(stackTrace);
                   }
-                  return Text(error.toString());
+                  return Center(child: Text(error.toString()));
                 },
                 emptyBuilder: (context) => const Center(
                   child: Text("No Upcoming Matches"),

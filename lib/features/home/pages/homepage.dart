@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/home/widgets/favorite_turf_listview.dart';
 import 'package:turf_tracker/features/home/widgets/upcoming_list_view.dart';
+import 'package:turf_tracker/router/router.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -75,7 +77,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          context.pushNamed(AppRoutes.upcomingBookings.name),
                       child: const Text(
                         "See All",
                         style: TextStyle(

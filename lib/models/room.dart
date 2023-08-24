@@ -4,7 +4,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Room {
+  final String roomId;
   final String uid;
+  final bool isActive;
+  final String bookerNumber;
   final String turfId;
   final String turfName;
   final String turfAddress;
@@ -13,8 +16,12 @@ class Room {
   final Timestamp startTime;
   final Timestamp endTime;
   final num totalPrice;
+  final String district;
   Room({
+    required this.roomId,
     required this.uid,
+    required this.isActive,
+    required this.bookerNumber,
     required this.turfId,
     required this.turfName,
     required this.turfAddress,
@@ -23,10 +30,14 @@ class Room {
     required this.startTime,
     required this.endTime,
     required this.totalPrice,
+    required this.district,
   });
 
   Room copyWith({
+    String? roomId,
     String? uid,
+    bool? isActive,
+    String? bookerNumber,
     String? turfId,
     String? turfName,
     String? turfAddress,
@@ -35,9 +46,13 @@ class Room {
     Timestamp? startTime,
     Timestamp? endTime,
     num? totalPrice,
+    String? district,
   }) {
     return Room(
+      roomId: roomId ?? this.roomId,
       uid: uid ?? this.uid,
+      isActive: isActive ?? this.isActive,
+      bookerNumber: bookerNumber ?? this.bookerNumber,
       turfId: turfId ?? this.turfId,
       turfName: turfName ?? this.turfName,
       turfAddress: turfAddress ?? this.turfAddress,
@@ -46,12 +61,16 @@ class Room {
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
       totalPrice: totalPrice ?? this.totalPrice,
+      district: district ?? this.district,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'roomId': roomId,
       'uid': uid,
+      'isActive': isActive,
+      'bookerNumber': bookerNumber,
       'turfId': turfId,
       'turfName': turfName,
       'turfAddress': turfAddress,
@@ -60,12 +79,16 @@ class Room {
       'startTime': startTime,
       'endTime': endTime,
       'totalPrice': totalPrice,
+      'district': district,
     };
   }
 
   factory Room.fromMap(Map<String, dynamic> map) {
     return Room(
+      roomId: map['roomId'] as String,
       uid: map['uid'] as String,
+      isActive: map['isActive'] as bool,
+      bookerNumber: map['bookerNumber'] as String,
       turfId: map['turfId'] as String,
       turfName: map['turfName'] as String,
       turfAddress: map['turfAddress'] as String,
@@ -74,6 +97,7 @@ class Room {
       startTime: map['startTime'] as Timestamp,
       endTime: map['endTime'] as Timestamp,
       totalPrice: map['totalPrice'] as num,
+      district: map['district'] as String,
     );
   }
 
@@ -84,14 +108,17 @@ class Room {
 
   @override
   String toString() {
-    return 'Room(uid: $uid, turfId: $turfId, turfName: $turfName, turfAddress: $turfAddress, dimension: $dimension, bookedBy: $bookedBy, startTime: $startTime, endTime: $endTime, totalPrice: $totalPrice)';
+    return 'Room(roomId: $roomId, uid: $uid, isActive: $isActive, bookerNumber: $bookerNumber, turfId: $turfId, turfName: $turfName, turfAddress: $turfAddress, dimension: $dimension, bookedBy: $bookedBy, startTime: $startTime, endTime: $endTime, totalPrice: $totalPrice, district: $district)';
   }
 
   @override
   bool operator ==(covariant Room other) {
     if (identical(this, other)) return true;
 
-    return other.uid == uid &&
+    return other.roomId == roomId &&
+        other.uid == uid &&
+        other.isActive == isActive &&
+        other.bookerNumber == bookerNumber &&
         other.turfId == turfId &&
         other.turfName == turfName &&
         other.turfAddress == turfAddress &&
@@ -99,12 +126,16 @@ class Room {
         other.bookedBy == bookedBy &&
         other.startTime == startTime &&
         other.endTime == endTime &&
-        other.totalPrice == totalPrice;
+        other.totalPrice == totalPrice &&
+        other.district == district;
   }
 
   @override
   int get hashCode {
-    return uid.hashCode ^
+    return roomId.hashCode ^
+        uid.hashCode ^
+        isActive.hashCode ^
+        bookerNumber.hashCode ^
         turfId.hashCode ^
         turfName.hashCode ^
         turfAddress.hashCode ^
@@ -112,6 +143,7 @@ class Room {
         bookedBy.hashCode ^
         startTime.hashCode ^
         endTime.hashCode ^
-        totalPrice.hashCode;
+        totalPrice.hashCode ^
+        district.hashCode;
   }
 }
