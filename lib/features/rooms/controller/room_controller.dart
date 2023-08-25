@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/rooms/repository/rooms_repository.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../../common/custom_snackbar.dart';
 import '../../../models/room.dart';
 
@@ -20,6 +19,10 @@ final getAllActiveRoomsByDistrictProvider =
   return ref
       .watch(roomControllerProvider.notifier)
       .getAllActiveRoomsByDistrict(selectedDistrict: selectedDistrict);
+});
+final getRoomByIdProvider =
+    StreamProvider.family.autoDispose<Room, String>((ref, roomId) {
+  return ref.watch(roomControllerProvider.notifier).getRoomById(roomId: roomId);
 });
 final getAllInactiveRoomsByDistrictProvider =
     StreamProvider.family<List<Room>, String>((ref, selectedDistrict) {
@@ -58,7 +61,11 @@ class RoomController extends StateNotifier<bool> {
     final newRoom = Room(
         roomId: roomId,
         uid: FirebaseAuth.instance.currentUser!.uid,
+        joinedBy: '',
+        joinedByName: '',
+        joinedByNumber: '',
         isActive: true,
+        isLocked: false,
         bookerNumber: bookerNumber,
         bookingId: bookingId,
         turfId: turfId,
@@ -91,6 +98,27 @@ class RoomController extends StateNotifier<bool> {
     );
   }
 
+  void joinRoom({
+    required String roomId,
+    required BuildContext context,
+  }) async {
+    state = true;
+    final user = _ref.read(userDataNotifierProvider);
+    final res = await _roomRepository.joinRoom(
+        roomId: roomId,
+        uid: user.uid,
+        phoneNumber: user.phoneNumber,
+        joinedByName: user.name);
+    state = false;
+    res.fold(
+        (l) => showSnackbar(
+              context: context,
+              text: l.message,
+            ), (r) {
+      showSnackbar(context: context, text: "Joined the room");
+    });
+  }
+
   Stream<List<Room>> getAllActiveRoomsByDistrict(
       {required String selectedDistrict}) {
     return _roomRepository.getActiveAllRoomsByDistrict(
@@ -107,5 +135,9 @@ class RoomController extends StateNotifier<bool> {
   Stream<List<Room>> getMyRooms() {
     final user = _ref.read(userDataNotifierProvider);
     return _roomRepository.getMyRooms(uid: user.uid);
+  }
+
+  Stream<Room> getRoomById({required String roomId}) {
+    return _roomRepository.getRoomById(roomId: roomId);
   }
 }

@@ -4,7 +4,6 @@ import 'package:turf_tracker/features/auth/pages/forgot_password.dart';
 import 'package:turf_tracker/features/bookings/pages/booking_details_page.dart';
 import 'package:turf_tracker/features/bookings/pages/past_bookings.dart';
 import 'package:turf_tracker/features/bookings/pages/upcoming_page.dart';
-import 'package:turf_tracker/features/home/widgets/upcoming_list_view.dart';
 import 'package:turf_tracker/features/profile/pages/edit_profile.dart';
 import 'package:turf_tracker/features/rooms/pages/confirm_room_page.dart';
 import 'package:turf_tracker/features/teams/pages/add_mod_page.dart';
@@ -20,6 +19,7 @@ import 'package:turf_tracker/features/turfs/pages/payment_confirm_page.dart';
 import 'package:turf_tracker/features/turfs/pages/time_selection_page.dart';
 import 'package:turf_tracker/features/turfs/pages/turf_details_page.dart';
 import 'package:turf_tracker/models/booking.dart';
+import 'package:turf_tracker/models/room.dart';
 import 'package:turf_tracker/models/team.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:turf_tracker/models/user.dart';
@@ -52,6 +52,7 @@ enum AppRoutes {
   bookingsHistory,
   upcomingBookings,
   teamFormation,
+  rooms,
   confirmRoomPage
 }
 
@@ -218,10 +219,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
-            path: 'confirmRoomPage',
+            path: 'rooms/confirmRoomPage/:roomId',
             name: AppRoutes.confirmRoomPage.name,
             builder: (context, state) {
-              return const ConfirmRoomPage();
+              final String roomId = state.pathParameters['roomId']!;
+              final Room room = state.extra as Room;
+              return ConfirmRoomPage(
+                room: room,
+                roomId: roomId,
+              );
             },
           ),
         ],

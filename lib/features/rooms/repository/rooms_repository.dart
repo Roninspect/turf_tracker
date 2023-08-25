@@ -34,6 +34,25 @@ class RoomRepository {
     }
   }
 
+  FutureVoid joinRoom(
+      {required String roomId,
+      required String uid,
+      required String joinedByName,
+      required String phoneNumber}) async {
+    try {
+      return right(
+        await _firestore.collection("rooms").doc(roomId).update({
+          'isActive': false,
+          "joinedBy": uid,
+          'joinedByName': joinedByName,
+          'joinedByNumber': phoneNumber,
+        }),
+      );
+    } on FirebaseException catch (e) {
+      return left(Failure(e.message!));
+    }
+  }
+
   Stream<List<Room>> getActiveAllRoomsByDistrict({
     required String district,
   }) {
@@ -52,7 +71,12 @@ class RoomRepository {
     return _firestore
         .collection("rooms")
         .where("district", isEqualTo: district)
-        .where('uid', isEqualTo: uid)
+        .where(
+          Filter.or(
+            Filter('uid', isEqualTo: uid),
+            Filter('joinedBy', isEqualTo: uid),
+          ),
+        )
         .where("isActive", isEqualTo: false)
         .snapshots()
         .map(
@@ -68,5 +92,13 @@ class RoomRepository {
         .map(
           (event) => event.docs.map((e) => Room.fromMap(e.data())).toList(),
         );
+  }
+
+  Stream<Room> getRoomById({required String roomId}) {
+    return _firestore
+        .collection("rooms")
+        .doc(roomId)
+        .snapshots()
+        .map((event) => Room.fromMap(event.data() as Map<String, dynamic>));
   }
 }

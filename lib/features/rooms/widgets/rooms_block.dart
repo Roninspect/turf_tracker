@@ -145,14 +145,16 @@ class RoomsCard extends ConsumerWidget {
                       ),
                       Row(
                         children: [
-                          const SizedBox(width: 150),
+                          const SizedBox(width: 140),
                           room.isActive && room.uid != user.uid
                               ? ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: greenColor,
                                       minimumSize: const Size(0, 40)),
                                   onPressed: () => context.pushNamed(
-                                      AppRoutes.confirmRoomPage.name),
+                                      AppRoutes.confirmRoomPage.name,
+                                      pathParameters: {'roomId': room.roomId},
+                                      extra: room),
                                   child: const Text(
                                     "Join",
                                     style: TextStyle(color: Colors.white),
@@ -172,7 +174,25 @@ class RoomsCard extends ConsumerWidget {
                                           color: Colors.redAccent,
                                         ),
                                       ))
-                                  : const SizedBox.shrink(),
+                                  : !room.isActive &&
+                                          (room.uid == user.uid ||
+                                              room.joinedBy == user.uid)
+                                      ? ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: greenColor,
+                                              minimumSize: const Size(0, 40)),
+                                          onPressed: () => context.pushNamed(
+                                              AppRoutes.confirmRoomPage.name,
+                                              pathParameters: {
+                                                'roomId': room.roomId
+                                              },
+                                              extra: room),
+                                          child: const Text(
+                                            "enter",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ))
+                                      : const SizedBox.shrink(),
                           const SizedBox(width: 10),
                         ],
                       ),

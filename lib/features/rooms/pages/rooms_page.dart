@@ -5,11 +5,20 @@ import 'package:turf_tracker/features/rooms/pages/all_room_page.dart';
 import 'package:turf_tracker/features/rooms/pages/inactiveRoomsPage.dart';
 import 'package:turf_tracker/features/rooms/pages/my_rooms_page.dart';
 
-class RoomsPage extends ConsumerWidget {
-  const RoomsPage({super.key});
+import '../provider/room_page_tab_provider.dart';
+
+class RoomPage extends ConsumerStatefulWidget {
+  const RoomPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _RoomPageState();
+}
+
+class _RoomPageState extends ConsumerState<RoomPage>
+    with TickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    final TabController tabController = TabController(length: 3, vsync: this);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -33,44 +42,51 @@ class RoomsPage extends ConsumerWidget {
             ),
           ),
         ),
-        body: const DefaultTabController(
-            length: 3,
-            child: Column(
-              children: [
-                TabBar(
-                    indicatorColor: greenColor,
-                    splashFactory: NoSplash.splashFactory,
-                    tabs: [
-                      Tab(
-                        icon: Text(
-                          "Active Rooms",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                      ),
-                      Tab(
-                        icon: Text(
-                          "My Rooms",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                      ),
-                      Tab(
-                        icon: Text(
-                          "Joined Rooms",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                      ),
-                    ]),
-                Expanded(
-                  child: TabBarView(children: [
-                    AllRoomsPage(),
-                    MyRoomsPage(),
-                    AllInactiveRoomsPage(),
-                  ]),
-                )
-              ],
-            )));
+        body: Column(
+          children: [
+            TabBar(
+                controller: tabController,
+                onTap: (value) {
+                  ref
+                      .read(mainroomTabIndexNotifierProvider.notifier)
+                      .changeIndex(selectedValue: value);
+                },
+                indicatorColor: greenColor,
+                splashFactory: NoSplash.splashFactory,
+                tabs: const [
+                  Tab(
+                    icon: Text(
+                      "Active Rooms",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ),
+                  Tab(
+                    icon: Text(
+                      "My Rooms",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ),
+                  Tab(
+                    icon: Text(
+                      "Joined Rooms",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ),
+                ]),
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: const [
+                  AllRoomsPage(),
+                  MyRoomsPage(),
+                  AllInactiveRoomsPage(),
+                ],
+              ),
+            )
+          ],
+        ));
   }
 }

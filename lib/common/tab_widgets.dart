@@ -9,7 +9,7 @@ class TabWidgets {
   static final List<Widget> tabwidgets = <Widget>[
     const HomePage(),
     const TurfPage(),
-    const RoomsPage(),
+    const RoomPage(),
     const MyTeamsPage(),
     const ProfilePage(),
   ];
