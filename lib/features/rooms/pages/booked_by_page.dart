@@ -18,6 +18,8 @@ class BookedByPage extends ConsumerWidget {
     final endTime = DateFormat('hh:mm a').format(room.endTime.toDate());
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
             child: GridView(
@@ -59,6 +61,24 @@ class BookedByPage extends ConsumerWidget {
               ],
             ),
           ),
+          room.isActive
+              ? const ListTile(
+                  title: Row(
+                    children: [
+                      Icon(
+                        Icons.label_important_outline_rounded,
+                        color: Colors.redAccent,
+                        size: 40,
+                      ),
+                      SizedBox(
+                        width: 240,
+                        child: Text(
+                            "You have to advance 200 BDT to confirm the room"),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink()
         ],
       ),
     );

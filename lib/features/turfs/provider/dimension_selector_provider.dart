@@ -12,3 +12,16 @@ class DimensionSelectionNotifier extends StateNotifier<String> {
     state = selectedDimension;
   }
 }
+
+final aVSbSelectionNotifierProvider =
+    StateNotifierProvider<AvsBSelectionNotifier, String>((ref) {
+  return AvsBSelectionNotifier();
+});
+
+class AvsBSelectionNotifier extends StateNotifier<String> {
+  AvsBSelectionNotifier() : super("");
+
+  void selectDimension({required String aVSb}) {
+    state = aVSb;
+  }
+}

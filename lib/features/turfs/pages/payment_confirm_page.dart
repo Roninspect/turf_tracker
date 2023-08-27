@@ -78,7 +78,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
   Widget build(BuildContext context) {
     final avalibilty = ref.watch(availibiltyNotifierProvider);
     final timelist = ref.watch(selectedTimeTableNotifierProvider);
-    final dimensionSlected = ref.watch(dimensionSelectionNotifierProvider);
+    final dimensionSlected = ref.watch(aVSbSelectionNotifierProvider);
     final selectedSlotType = ref.watch(slotTypeNotifierProvider);
     final user = ref.watch(userDataNotifierProvider);
 

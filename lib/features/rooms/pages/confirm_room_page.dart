@@ -55,7 +55,7 @@ class ConfirmRoomPage extends ConsumerWidget {
                       child: TabBarView(
                         children: [
                           BookedByPage(room: newRoom),
-                          if (!newRoom.isActive) AcceptedByPage(room: newRoom)
+                          if (!newRoom.isActive) AcceptedByPage(room: newRoom),
                         ],
                       ),
                     ),

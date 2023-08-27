@@ -70,6 +70,11 @@ class DimensionsListView extends ConsumerWidget {
                                                   .notifier)
                                           .selectDimension(
                                               selectedDimension: value!);
+                                      ref
+                                          .read(aVSbSelectionNotifierProvider
+                                              .notifier)
+                                          .selectDimension(
+                                              aVSb: dimension.aVSb);
                                     },
                                   ),
                                 ],
