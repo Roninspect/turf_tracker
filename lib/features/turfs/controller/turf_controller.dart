@@ -263,4 +263,18 @@ class TurfController {
     return _turfRepository.getTwoBookings(
         turfId: turfId, uid: FirebaseAuth.instance.currentUser!.uid);
   }
+
+  //** resetting */
+  void resetTimeTable({
+    required Availibilty selectedAvailibilty,
+    required BuildContext context,
+  }) async {
+    final res = await _turfRepository.resetTimeTable(
+        selectedAvailibilty: selectedAvailibilty);
+
+    res.fold(
+      (l) => showSnackbar(context: context, text: l.message),
+      (r) => showSnackbar(context: context, text: "resetted"),
+    );
+  }
 }

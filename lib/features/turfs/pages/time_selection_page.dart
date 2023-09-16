@@ -60,7 +60,10 @@ class TimeSelectionPage extends ConsumerWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  timeslotdialog(context: context);
+                  // timeslotdialog(context: context);
+                  ref.read(turfControllerProvider).resetTimeTable(
+                      selectedAvailibilty: timeAvailibiltyFromTimeSelected,
+                      context: context);
                 },
                 icon: const Icon(
                   Icons.info,

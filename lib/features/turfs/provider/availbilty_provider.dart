@@ -9,14 +9,15 @@ class AvailibiltyNotifier extends Notifier<Availibilty> {
   @override
   Availibilty build() {
     return Availibilty(
-        timeId: "",
-        turfId: "",
-        did: "",
-        status: "",
-        date: Timestamp(0, 0),
-        dimension: "",
-        oneHalfHourAvailibilty: [],
-        oneHourAvailibilty: []);
+      timeId: "",
+      turfId: "",
+      did: "",
+      status: "",
+      date: Timestamp(0, 0),
+      dimension: "",
+      oneHalfHourAvailibilty: [],
+      oneHourAvailibilty: [],
+    );
   }
 
   void selectTime({required Availibilty selectedTime}) {

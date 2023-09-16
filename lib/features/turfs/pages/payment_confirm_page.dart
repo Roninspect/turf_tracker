@@ -296,10 +296,10 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                     context: context);
 
             //   //** invalidating or resetting the selected data */
-            // ref.invalidate(availibiltyNotifierProvider);
-            ref.invalidate(selectedTimeTableNotifierProvider);
+            ref.invalidate(availibiltyNotifierProvider);
             ref.invalidate(selectedTimeTableNotifierProvider);
 
+            context.pop();
             context.pop();
             //   showSnackbar(
             //       context: context,

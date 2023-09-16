@@ -280,7 +280,9 @@ class TurfRepository {
       if (kDebugMode) {
         print(stk);
       }
-      return left(Failure(e.toString()));
+      return left(
+        Failure(e.toString()),
+      );
     }
   }
 
@@ -393,5 +395,27 @@ class TurfRepository {
         .snapshots()
         .map((event) =>
             event.docs.map((e) => Booking.fromMap(e.data())).toList());
+  }
+
+  FutureVoid resetTimeTable({required Availibilty selectedAvailibilty}) async {
+    try {
+      final listOfHalf = selectedAvailibilty.oneHalfHourAvailibilty
+          .map((e) => e.copyWith(isAvailable: true));
+      final listOfOne = selectedAvailibilty.oneHourAvailibilty
+          .map((e) => e.copyWith(isAvailable: true));
+
+      return right(await _firestore
+          .collection('time_availibilty')
+          .doc(selectedAvailibilty.timeId) // Replace with your document ID
+          .update({
+        'oneHourAvailibilty':
+            listOfOne.map((timeTable) => timeTable.toMap()).toList(),
+        'oneHalfHourAvailability':
+            listOfHalf.map((timeTable) => timeTable.toMap()).toList(),
+      }));
+    } catch (e, stk) {
+      print(stk);
+      return left(Failure(e.toString()));
+    }
   }
 }
