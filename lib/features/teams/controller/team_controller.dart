@@ -160,9 +160,9 @@ class TeamController extends StateNotifier<bool> {
         mods: [uid],
         sportsPlays: icons);
     print('Team: ${team.toMap()}');
-    state = false;
-    final res = await teamRepository.createTeam(teamModel: team);
 
+    final res = await teamRepository.createTeam(teamModel: team);
+    state = false;
     res.fold(
       (l) => showSnackbar(context: context, text: l.message),
       (r) => context.pop(),

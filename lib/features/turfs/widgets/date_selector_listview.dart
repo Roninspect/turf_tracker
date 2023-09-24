@@ -20,14 +20,14 @@ class DateSelectorListview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dimensionSlected = ref.watch(dimensionSelectionNotifierProvider);
+    final did = ref.watch(dimensionDidSelectionNotifierProvider);
     final Availibilty? timeAvailibiltyFromTimeSelected =
         ref.watch(availibiltyNotifierProvider);
     return SizedBox(
       height: 120,
       child: ref
           .watch(fetchTimeAvailableProvider(
-              ArgsModel(turfId: turf.turfId, secondParams: dimensionSlected)))
+              ArgsModel(turfId: turf.turfId, secondParams: did)))
           .when(
             data: (data) {
               return ListView.builder(

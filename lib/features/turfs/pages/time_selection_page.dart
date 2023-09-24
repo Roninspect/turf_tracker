@@ -166,7 +166,7 @@ class TimeSelectionPage extends ConsumerWidget {
                                 .compareTo(b.startTime.toDate()));
 
                         return GridView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(

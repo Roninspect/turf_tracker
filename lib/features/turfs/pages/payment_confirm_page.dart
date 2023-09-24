@@ -300,7 +300,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
             ref.invalidate(selectedTimeTableNotifierProvider);
 
             context.pop();
-            context.pop();
+
             //   showSnackbar(
             //       context: context,
             //       color: Colors.green,

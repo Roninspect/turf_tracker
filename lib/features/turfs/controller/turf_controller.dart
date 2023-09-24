@@ -79,10 +79,10 @@ final fetchDimensionsByTurfIdProvider = StreamProvider.family
 final fetchTimeAvailableProvider = StreamProvider.family
     .autoDispose<List<Availibilty>, ArgsModel>((ref, vendoCode) {
   String turfId = vendoCode.turfId;
-  String dimensionName = vendoCode.secondParams;
+  String did = vendoCode.secondParams;
   return ref
       .watch(turfControllerProvider)
-      .fetchTimeAvailable(turfId: turfId, dimensionName: dimensionName);
+      .fetchTimeAvailable(turfId: turfId, did: did);
 });
 
 final isFavoritedProvider =
@@ -122,9 +122,8 @@ class TurfController {
   }
 
   Stream<List<Availibilty>> fetchTimeAvailable(
-      {required String turfId, required String dimensionName}) {
-    return _turfRepository.fetchTimeAvailable(
-        turfId: turfId, dimensionName: dimensionName);
+      {required String turfId, required String did}) {
+    return _turfRepository.fetchTimeAvailable(turfId: turfId, did: did);
   }
 
 //   void updateAvailibiltyStatus({

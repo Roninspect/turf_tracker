@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/common/colors.dart';
 
-import 'package:turf_tracker/models/turf.dart';
-
 class CustomChip extends ConsumerWidget {
   final String first;
   final String? second;

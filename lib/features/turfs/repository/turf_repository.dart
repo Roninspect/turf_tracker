@@ -63,11 +63,11 @@ class TurfRepository {
 
   //** fetching time and date Availibilty by turf id and dimension name */
   Stream<List<Availibilty>> fetchTimeAvailable(
-      {required String turfId, required String dimensionName}) {
+      {required String turfId, required String did}) {
     return _firestore
         .collection("time_availibilty")
         .where("turfId", isEqualTo: turfId)
-        .where("dimension", isEqualTo: dimensionName)
+        .where("did", isEqualTo: did)
         .snapshots()
         .map((event) =>
             event.docs.map((e) => Availibilty.fromMap(e.data())).toList());
