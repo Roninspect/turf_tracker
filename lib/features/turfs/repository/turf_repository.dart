@@ -286,6 +286,93 @@ class TurfRepository {
     }
   }
 
+  //new method for making the slots unavailable
+
+    FutureVoid updatingTimeSlotAfterBooking({
+    required TimeTable selectedSlot,
+    required SlotType slotType,
+    required Availibilty selectedAvailability,
+  }) async {
+    try {
+      bool shouldMarkUnavailable(TimeTable selectedSlot, TimeTable timeTable) {
+        final startTime1 = selectedSlot.startTime.toDate();
+        final endTime1 = selectedSlot.endTime.toDate();
+        final startTime2 = timeTable.startTime.toDate();
+        final endTime2 = timeTable.endTime.toDate();
+
+        //checking intersection
+
+        bool isIntersecting = (startTime1.isAfter(startTime2) && startTime1.isBefore(endTime2)) ||
+            (endTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) ||
+            (startTime1.isBefore(startTime2) && endTime1.isAfter(endTime2));
+
+        //checking similar
+        bool isMatching = startTime1.isAtSameMomentAs(startTime2) && endTime1.isAtSameMomentAs(endTime2);
+
+        // checking 31 minutes
+        bool isAfter30Minutes = false;
+        if (timeTable.startTime.toDate().toUtc().difference(selectedSlot.endTime.toDate().toUtc()).inMinutes >= 30 &&
+            timeTable.startTime.toDate().toUtc().difference(selectedSlot.endTime.toDate().toUtc()).inMinutes <= 31) {
+          isAfter30Minutes = true;
+        }
+        print('Selected: ${DateFormat.jm().format(selectedSlot.startTime.toDate())} To ${DateFormat.jm().format(selectedSlot.endTime.toDate())}');
+        print('${DateFormat.jm().format(timeTable.startTime.toDate())} To ${DateFormat.jm().format(timeTable.endTime.toDate())}');
+        print(isAfter30Minutes);
+
+        return isIntersecting || isMatching || isAfter30Minutes;
+      }
+
+
+
+      List<TimeTable> markSlotsUnavailable(List<TimeTable> slots, TimeTable selectedSlot) {
+        return slots.map((timeTable) {
+          final isUnavailable = shouldMarkUnavailable(selectedSlot, timeTable);
+          return isUnavailable  ? timeTable.copyWith(isAvailable: false) : timeTable;
+        }).toList();
+      }
+
+
+      // Update the availability status of one-hour slots
+      final updatedOneHourSlots = markSlotsUnavailable(selectedAvailability.oneHourAvailibilty, selectedSlot);
+
+      // Update the availability status of one-and-a-half-hour slots
+      final updatedOneHalfHourSlots = markSlotsUnavailable(selectedAvailability.oneHalfHourAvailibilty, selectedSlot);
+
+      return slotType == SlotType.oneHalfHourAvailibilty
+          ? right(await _firestore
+          .collection('time_availibilty')
+          .doc(selectedAvailability.timeId)
+          .update({
+        'oneHourAvailibilty': updatedOneHourSlots
+            .map((timeTable) => timeTable.toMap())
+            .toList(),
+        'oneHalfHourAvailability': updatedOneHalfHourSlots
+            .map((timeTable) => timeTable.toMap())
+            .toList(),
+      }))
+          : right(await _firestore
+          .collection('time_availibilty')
+          .doc(selectedAvailability.timeId) // Replace with your document ID
+          .update({
+        'oneHourAvailibilty': updatedOneHourSlots
+            .map((timeTable) => timeTable.toMap())
+            .toList(),
+        'oneHalfHourAvailability': updatedOneHalfHourSlots
+            .map((timeTable) => timeTable.toMap())
+            .toList(),
+      }));
+
+
+    } catch (e, stk) {
+      if (kDebugMode) {
+        print(stk);
+      }
+      return left(
+        Failure(e.toString()),
+      );
+    }
+  }
+
   //** favouriting a turf */
 
   FutureVoid favoriteATurf(
