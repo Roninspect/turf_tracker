@@ -126,59 +126,43 @@ class TurfController {
     return _turfRepository.fetchTimeAvailable(turfId: turfId, did: did);
   }
 
-//   void updateAvailibiltyStatus({
-//     required List<int> timetableIndices,
-//     required List<TimeTable> updatedTimetables,
-//     required BuildContext context,
-//     required String timeId,
-//   }) async {
-//     final res = await _turfRepository.updateAvailibiltyStatus(
-//       timetableIndices: timetableIndices,
-//       updatedTimetables: updatedTimetables,
-//       timeId: timeId,
-//     );
+//** locking selected Time slots */
+  void lockingSelectedTimeSlot({
+    required TimeTable selectedSlot,
+    required SlotType slotType,
+    required Availibilty selectedAvailability,
+    required BuildContext context,
+  }) async {
+    final res = await _turfRepository.lockingselectedtimeslots(
+      selectedSlot: selectedSlot,
+      slotType: slotType,
+      selectedAvailability: selectedAvailability,
+    );
 
-//     res.fold((l) => showSnackbar(context: context, text: l.message),
-//         (r) => showSnackbar(context: context, text: "Booked Successfully"));
-//   }
+    res.fold(
+        (l) => showSnackbar(context: context, text: l.message),
+        (r) => showSnackbar(
+            context: context,
+            text:
+                "Selected Slots are locked for you only, it'll expire in 3 minutes"));
+  }
 
-// //** locking selected Time slots */
-//   void lockingSelectedTimeSlot({
-//     required List<int> timetableIndices,
-//     required List<TimeTable> updatedTimetables,
-//     required BuildContext context,
-//     required String timeId,
-//   }) async {
-//     final res = await _turfRepository.lockingselectedtimeslots(
-//       timetableIndices: timetableIndices,
-//       updatedTimetables: updatedTimetables,
-//       timeId: timeId,
-//     );
+  //** unlocking selected Time slots */
+  void unlockingSelectedTimeSlot({
+    required TimeTable selectedSlot,
+    required SlotType slotType,
+    required Availibilty selectedAvailability,
+    required BuildContext context,
+  }) async {
+    final res = await _turfRepository.unlockingTimeLots(
+      selectedSlot: selectedSlot,
+      slotType: slotType,
+      selectedAvailability: selectedAvailability,
+    );
 
-//     res.fold(
-//         (l) => showSnackbar(context: context, text: l.message),
-//         (r) => showSnackbar(
-//             context: context,
-//             text:
-//                 "Selected Slots are locked for you only, it'll expire in 3 minutes"));
-//   }
-
-//   //** unlocking selected Time slots */
-//   void unlockingSelectedTimeSlot({
-//     required List<int> timetableIndices,
-//     required List<TimeTable> updatedTimetables,
-//     required BuildContext context,
-//     required String timeId,
-//   }) async {
-//     final res = await _turfRepository.unlockingTimeLots(
-//       timetableIndices: timetableIndices,
-//       updatedTimetables: updatedTimetables,
-//       timeId: timeId,
-//     );
-
-//     res.fold(
-//         (l) => showSnackbar(context: context, text: l.message), (r) => null);
-//   }
+    res.fold(
+        (l) => showSnackbar(context: context, text: l.message), (r) => null);
+  }
 
   void updateTimeSlotAfterBooking({
     required TimeTable selectedSlot,
@@ -189,12 +173,12 @@ class TurfController {
     final res = await _turfRepository.updatingTimeSlotAfterBooking(
       selectedSlot: selectedSlot,
       slotType: slotType,
-      selectedAvailibilty: selectedAvailibilty,
+      selectedAvailability: selectedAvailibilty,
     );
 
     res.fold(
       (l) => showSnackbar(context: context, text: l.message),
-      (r) => showSnackbar(context: context, text: "Successfull"),
+      (r) => showSnackbar(context: context, text: "Booking is Successful"),
     );
   }
 

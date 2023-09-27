@@ -11,6 +11,7 @@ import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/turfs/provider/slot_type_selector_provider.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:uuid/uuid.dart';
+import '../../../common/custom_snackbar.dart';
 import '../../../models/booking.dart';
 import '../../bookings/controller/booking_controller.dart';
 import '../controller/turf_controller.dart';
@@ -58,11 +59,11 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
   }
 
   void unlockSelectedTimeSlots({required bool willPop}) {
-    // ref.read(turfControllerProvider).unlockingSelectedTimeSlot(
-    //     timetableIndices: ref.read(listOfTimeTableIndicesNotifierProvider),
-    //     updatedTimetables: ref.read(selectedTimeTableNotifierProvider),
-    //     context: context,
-    //     timeId: ref.read(availibiltyNotifierProvider).timeId);
+    ref.read(turfControllerProvider).unlockingSelectedTimeSlot(
+        context: context,
+        selectedAvailability: ref.read(availibiltyNotifierProvider),
+        selectedSlot: ref.read(selectedTimeTableNotifierProvider)!,
+        slotType: ref.read(slotTypeNotifierProvider)!);
     ref.invalidate(selectedTimeTableNotifierProvider);
     willPop ? context.pop() : null;
   }
@@ -301,11 +302,10 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
 
             context.pop();
 
-            //   showSnackbar(
-            //       context: context,
-            //       color: Colors.green,
-            //       text: "Booked Successfully");
-            // }
+            showSnackbar(
+                context: context,
+                color: Colors.green,
+                text: "Booked Successfully");
           },
           label: const Text(
             "Proceed To Payment",

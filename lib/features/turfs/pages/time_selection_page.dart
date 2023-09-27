@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +13,7 @@ import 'package:turf_tracker/features/turfs/widgets/date_selector_listview.dart'
 import 'package:turf_tracker/features/turfs/widgets/timeslot_info.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:turf_tracker/router/router.dart';
+import '../../../common/custom_snackbar.dart';
 import '../../../models/availibilty.dart';
 import '../provider/slot_type_selector_provider.dart';
 
@@ -53,6 +55,7 @@ class TimeSelectionPage extends ConsumerWidget {
                 ref.invalidate(availibiltyNotifierProvider);
                 ref.invalidate(selectedTimeTableNotifierProvider);
                 ref.invalidate(slotTypeNotifierProvider);
+
                 context.pop();
               },
               icon: const Icon(Icons.arrow_back)),
@@ -64,6 +67,8 @@ class TimeSelectionPage extends ConsumerWidget {
                   ref.read(turfControllerProvider).resetTimeTable(
                       selectedAvailibilty: timeAvailibiltyFromTimeSelected,
                       context: context);
+                  ref.invalidate(availibiltyNotifierProvider);
+                  ref.invalidate(selectedTimeTableNotifierProvider);
                 },
                 icon: const Icon(
                   Icons.info,
@@ -266,52 +271,31 @@ class TimeSelectionPage extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            if (selectedSlotType != null) {
+            if (selectedSlotType != null &&
+                selectedTime != null &&
+                timeAvailibiltyFromTimeSelected !=
+                    Availibilty(
+                      timeId: "",
+                      turfId: "",
+                      did: "",
+                      status: "",
+                      date: Timestamp(0, 0),
+                      dimension: "",
+                      oneHalfHourAvailibilty: const [],
+                      oneHourAvailibilty: const [],
+                    )) {
               context.pushNamed(AppRoutes.paymentConfirm.name,
                   pathParameters: {
                     'name': turf.name,
                   },
                   extra: turf);
+
+              ref.read(turfControllerProvider).lockingSelectedTimeSlot(
+                  context: context,
+                  selectedAvailability: timeAvailibiltyFromTimeSelected,
+                  selectedSlot: selectedTime,
+                  slotType: selectedSlotType);
             }
-
-            // ref.read(turfControllerProvider).lockingSelectedTimeSlot(
-            //     timetableIndices: listofIndices,
-            //     updatedTimetables: listofTime,
-            //     context: context,
-            //     timeId: timeAvailibiltyFromTimeSelected.timeId);
-
-            // if (timeAvailibiltyFromTimeSelected ==
-            //         Availibilty(
-            //             timeId: "",
-            //             turfId: "",
-            //             did: "",
-            //             status: "",
-            //             date: Timestamp(0, 0),
-            //             dimension: "",
-            //             availibility: []) ||
-            //     listofTime == []) {
-            //   showSnackbar(
-            //       context: context, text: "Please Select Date and Time Slot");
-            // } else {
-            //   //** saving the updated data to firestore */
-            //   ref.read(turfControllerProvider).updateAvailibiltyStatus(
-            //       context: context,
-            //       updatedTimetables: listofTime,
-            //       timetableIndices: listofIndices,
-            //       timeId: timeAvailibiltyFromTimeSelected.timeId,
-            //       timetableIndex: selectedTimeTableIndex);
-
-            //   //** invalidating or resetting the selected data */
-            //   ref.invalidate(availibiltyNotifierProvider);
-            //   ref.invalidate(selectedTimeTableNotifierProvider);
-            //   ref.invalidate(listOfTimeTableIndicesNotifierProvider);
-
-            //   context.pop();
-            //   showSnackbar(
-            //       context: context,
-            //       color: Colors.green,
-            //       text: "Booked Successfully");
-            // }
           },
           label: const Text('Continue'),
           icon: const Icon(
