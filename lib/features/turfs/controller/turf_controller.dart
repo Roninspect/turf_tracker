@@ -186,7 +186,7 @@ class TurfController {
     required Availibilty selectedAvailibilty,
     required BuildContext context,
   }) async {
-    final res = await _turfRepository.updateTimeSlotAfterBooking(
+    final res = await _turfRepository.updatingTimeSlotAfterBooking(
       selectedSlot: selectedSlot,
       slotType: slotType,
       selectedAvailibilty: selectedAvailibilty,
