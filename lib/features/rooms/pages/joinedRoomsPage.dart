@@ -5,8 +5,8 @@ import 'package:turf_tracker/features/rooms/widgets/rooms_block.dart';
 import 'package:turf_tracker/models/room.dart';
 import '../../turfs/provider/district_change_notifier.dart';
 
-class AllInactiveRoomsPage extends ConsumerWidget {
-  const AllInactiveRoomsPage({super.key});
+class AllJoinedRoomsPage extends ConsumerWidget {
+  const AllJoinedRoomsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

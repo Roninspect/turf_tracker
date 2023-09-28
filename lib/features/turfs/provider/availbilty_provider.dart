@@ -13,7 +13,7 @@ class AvailibiltyNotifier extends Notifier<Availibilty> {
       turfId: "",
       did: "",
       status: "",
-      date: Timestamp(0, 0),
+      date: Timestamp.fromDate(DateTime(1999)),
       dimension: "",
       oneHalfHourAvailibilty: [],
       oneHourAvailibilty: [],

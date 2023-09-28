@@ -10,10 +10,8 @@ import 'package:turf_tracker/features/turfs/controller/turf_controller.dart';
 import 'package:turf_tracker/features/turfs/provider/availbilty_provider.dart';
 import 'package:turf_tracker/features/turfs/provider/selected_timetable_provider.dart';
 import 'package:turf_tracker/features/turfs/widgets/date_selector_listview.dart';
-import 'package:turf_tracker/features/turfs/widgets/timeslot_info.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:turf_tracker/router/router.dart';
-import '../../../common/custom_snackbar.dart';
 import '../../../models/availibilty.dart';
 import '../provider/slot_type_selector_provider.dart';
 
@@ -27,7 +25,7 @@ class TimeSelectionPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Availibilty timeAvailibiltyFromTimeSelected =
-        ref.watch(availibiltyNotifierProvider);
+        ref.watch(availibiltyNotifierProvider)!;
     final selectedSlotType = ref.watch(slotTypeNotifierProvider);
 
     final selectedTime = ref.watch(selectedTimeTableNotifierProvider);
@@ -157,7 +155,7 @@ class TimeSelectionPage extends ConsumerWidget {
                     .watch(getTimeAvailibiltiesProvider(TripleArgsModel(
                         turfId: timeAvailibiltyFromTimeSelected.turfId,
                         dimensionId: timeAvailibiltyFromTimeSelected.did,
-                        selectedDate: timeAvailibiltyFromTimeSelected.date)))
+                        selectedDate: timeAvailibiltyFromTimeSelected.date!)))
                     .when(
                       data: (data) {
                         //** sorting the list beforehand from day to night */

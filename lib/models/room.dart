@@ -10,6 +10,7 @@ class Room {
   final String joinedByName;
   final String joinedByNumber;
   final bool isActive;
+  final bool isExpired;
   final bool isLocked;
   final String bookerNumber;
   final String bookingId;
@@ -30,6 +31,7 @@ class Room {
       required this.joinedByName,
       required this.joinedByNumber,
       required this.isActive,
+      required this.isExpired,
       required this.bookerNumber,
       required this.bookingId,
       required this.turfId,
@@ -50,6 +52,7 @@ class Room {
       String? joinedByName,
       String? joinedByNumber,
       bool? isActive,
+      bool? isExpired,
       bool? isLocked,
       String? bookerNumber,
       String? turfId,
@@ -69,6 +72,7 @@ class Room {
       joinedByName: joinedByName ?? this.joinedByName,
       joinedByNumber: joinedByNumber ?? this.joinedByNumber,
       isActive: isActive ?? this.isActive,
+      isExpired: isExpired ?? this.isExpired,
       isLocked: isLocked ?? this.isLocked,
       bookerNumber: bookerNumber ?? this.bookerNumber,
       bookingId: bookingId ?? this.bookingId,
@@ -92,6 +96,7 @@ class Room {
       'joinedByName': joinedByName,
       'joinedByNumber': joinedByNumber,
       'isActive': isActive,
+      "isExpired": isExpired,
       "isLocked": isLocked,
       'bookerNumber': bookerNumber,
       "bookingId": bookingId,
@@ -115,6 +120,7 @@ class Room {
       joinedByName: map['joinedByName'] as String,
       joinedByNumber: map['joinedByNumber'] as String,
       isActive: map['isActive'] as bool,
+      isExpired: map["isExpired"] as bool,
       isLocked: map["isLocked"] as bool,
       bookerNumber: map['bookerNumber'] as String,
       bookingId: map['bookingId'] as String,

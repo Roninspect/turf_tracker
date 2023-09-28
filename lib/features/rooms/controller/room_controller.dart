@@ -65,6 +65,7 @@ class RoomController extends StateNotifier<bool> {
         joinedByName: '',
         joinedByNumber: '',
         isActive: true,
+        isExpired: false,
         isLocked: false,
         bookerNumber: bookerNumber,
         bookingId: bookingId,

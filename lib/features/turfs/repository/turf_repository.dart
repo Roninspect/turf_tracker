@@ -85,20 +85,22 @@ class TurfRepository {
       bool shouldMarkUnavailable(TimeTable selectedSlot, TimeTable timeTable) {
         final startTime1 = selectedSlot.startTime.toDate();
         final endTime1 = selectedSlot.endTime.toDate();
-        final startTime2 = timeTable.startTime.toDate();
-        final endTime2 = timeTable.endTime.toDate();
+        final timeSlotStartTime = timeTable.startTime.toDate();
+        final timeSlotEndTime = timeTable.endTime.toDate();
 
         //checking intersection
 
-        bool isIntersecting =
-            (startTime1.isAfter(startTime2) && startTime1.isBefore(endTime2)) ||
-                (endTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) ||
-                (startTime1.isBefore(startTime2) && endTime1.isAfter(endTime2));
+        bool isIntersecting = (timeSlotStartTime.isAfter(startTime1) &&
+                timeSlotStartTime.isBefore(endTime1)) ||
+            (timeSlotEndTime.isAfter(startTime1) &&
+                timeSlotEndTime.isBefore(endTime1)) ||
+            (timeSlotStartTime.isBefore(startTime1) &&
+                timeSlotEndTime.isAfter(endTime1));
 
         //checking similar
 
-        bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
-            endTime1.isAtSameMomentAs(endTime2);
+        bool isMatching = startTime1.isAtSameMomentAs(timeSlotStartTime) &&
+            endTime1.isAtSameMomentAs(timeSlotEndTime);
 
         // checking 31 minutes
         bool isAfter30Minutes = false;
@@ -183,21 +185,39 @@ class TurfRepository {
       bool shouldMarkUnavailable(TimeTable selectedSlot, TimeTable timeTable) {
         final startTime1 = selectedSlot.startTime.toDate();
         final endTime1 = selectedSlot.endTime.toDate();
-        final startTime2 = timeTable.startTime.toDate();
-        final endTime2 = timeTable.endTime.toDate();
+        final timeSlotStartTime = timeTable.startTime.toDate();
+        final timeSlotEndTime = timeTable.endTime.toDate();
+
+        //     final startTime1 = selectedSlot.startTime.toDate();
+        // final endTime1 = selectedSlot.endTime.toDate();
+        // final startTime2 = timeTable.startTime.toDate();
+        // final endTime2 = timeTable.endTime.toDate();
+
+        // //checking intersection
+
+        // bool isIntersecting =
+        //     (startTime1.isAfter(startTime2) && startTime1.isBefore(endTime2)) ||
+        //         (endTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) ||
+        //         (startTime1.isBefore(startTime2) && endTime1.isAfter(endTime2));
+
+        // //checking similar
+
+        // bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
+        //     endTime1.isAtSameMomentAs(endTime2);
 
         //checking intersection
 
-        bool isIntersecting =
-            (startTime1.isAfter(startTime2) && startTime1.isBefore(endTime2)) ||
-                (endTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) ||
-                (startTime1.isBefore(startTime2) && endTime1.isAfter(endTime2));
+        bool isIntersecting = (timeSlotStartTime.isAfter(startTime1) &&
+                timeSlotStartTime.isBefore(endTime1)) ||
+            (timeSlotEndTime.isAfter(startTime1) &&
+                timeSlotEndTime.isBefore(endTime1)) ||
+            (timeSlotStartTime.isBefore(startTime1) &&
+                timeSlotEndTime.isAfter(endTime1));
 
         //checking similar
 
-        bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
-            endTime1.isAtSameMomentAs(endTime2);
-
+        bool isMatching = startTime1.isAtSameMomentAs(timeSlotStartTime) &&
+            endTime1.isAtSameMomentAs(timeSlotEndTime);
         // checking 31 minutes
         bool isAfter30Minutes = false;
         if (timeTable.startTime
@@ -272,7 +292,7 @@ class TurfRepository {
     }
   }
 
-  //new method for making the slots unavailable
+  //*new method for making the slots unavailable
 
   FutureVoid updatingTimeSlotAfterBooking({
     required TimeTable selectedSlot,
@@ -283,24 +303,27 @@ class TurfRepository {
       bool shouldMarkUnavailable(TimeTable selectedSlot, TimeTable timeTable) {
         final startTime1 = selectedSlot.startTime.toDate();
         final endTime1 = selectedSlot.endTime.toDate();
-        final startTime2 = timeTable.startTime.toDate();
-        final endTime2 = timeTable.endTime.toDate();
+        final timeSlotStartTime = timeTable.startTime.toDate();
+        final timeSlotEndTime = timeTable.endTime.toDate();
 
         //checking intersection
 
-        bool isIntersecting =
-            (startTime1.isAfter(startTime2) && startTime1.isBefore(endTime2)) ||
-                (endTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) ||
-                (startTime1.isBefore(startTime2) && endTime1.isAfter(endTime2));
+        bool isIntersecting = (timeSlotStartTime.isAfter(startTime1) &&
+                timeSlotStartTime.isBefore(endTime1)) ||
+            (timeSlotEndTime.isAfter(startTime1) &&
+                timeSlotEndTime.isBefore(endTime1)) ||
+            (timeSlotStartTime.isBefore(startTime1) &&
+                timeSlotEndTime.isAfter(endTime1));
 
         //checking similar
 
-        bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
-            endTime1.isAtSameMomentAs(endTime2);
+        bool isMatching = startTime1.isAtSameMomentAs(timeSlotStartTime) &&
+            endTime1.isAtSameMomentAs(timeSlotEndTime);
 
         // checking 31 minutes
         bool isAfter30Minutes = false;
-        if (timeTable.startTime
+        if (slotType == SlotType.oneHalfHourAvailibilty &&
+            timeTable.startTime
                     .toDate()
                     .toUtc()
                     .difference(selectedSlot.endTime.toDate().toUtc())
@@ -314,11 +337,6 @@ class TurfRepository {
                 31) {
           isAfter30Minutes = true;
         }
-        print(
-            'Selected: ${DateFormat.jm().format(selectedSlot.startTime.toDate())} To ${DateFormat.jm().format(selectedSlot.endTime.toDate())}');
-        print(
-            '${DateFormat.jm().format(timeTable.startTime.toDate())} To ${DateFormat.jm().format(timeTable.endTime.toDate())}');
-        print(isAfter30Minutes);
 
         return isIntersecting || isMatching || isAfter30Minutes;
       }
@@ -393,7 +411,7 @@ class TurfRepository {
     }
   }
 
-  //** favouriting a turf */
+  //** unfavouriting a turf */
 
   FutureVoid unFavoriteATurf({
     required String uid,
@@ -488,9 +506,9 @@ class TurfRepository {
   FutureVoid resetTimeTable({required Availibilty selectedAvailibilty}) async {
     try {
       final listOfHalf = selectedAvailibilty.oneHalfHourAvailibilty
-          .map((e) => e.copyWith(isAvailable: true));
+          .map((e) => e.copyWith(isAvailable: true, isLocked: false));
       final listOfOne = selectedAvailibilty.oneHourAvailibilty
-          .map((e) => e.copyWith(isAvailable: true));
+          .map((e) => e.copyWith(isAvailable: true, isLocked: false));
 
       return right(await _firestore
           .collection('time_availibilty')

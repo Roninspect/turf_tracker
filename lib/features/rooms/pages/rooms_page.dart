@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/features/rooms/pages/all_room_page.dart';
-import 'package:turf_tracker/features/rooms/pages/inactiveRoomsPage.dart';
+import 'package:turf_tracker/features/rooms/pages/expired_page.dart';
+import 'package:turf_tracker/features/rooms/pages/joinedRoomsPage.dart';
 import 'package:turf_tracker/features/rooms/pages/my_rooms_page.dart';
 
 import '../provider/room_page_tab_provider.dart';
@@ -18,7 +19,7 @@ class _RoomPageState extends ConsumerState<RoomPage>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final TabController tabController = TabController(length: 3, vsync: this);
+    final TabController tabController = TabController(length: 4, vsync: this);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -45,6 +46,7 @@ class _RoomPageState extends ConsumerState<RoomPage>
         body: Column(
           children: [
             TabBar(
+                isScrollable: true,
                 controller: tabController,
                 onTap: (value) {
                   ref
@@ -56,21 +58,28 @@ class _RoomPageState extends ConsumerState<RoomPage>
                 tabs: const [
                   Tab(
                     icon: Text(
-                      "Active Rooms",
+                      "Active rooms",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                   Tab(
                     icon: Text(
-                      "My Rooms",
+                      "My rooms",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                   Tab(
                     icon: Text(
-                      "Joined Rooms",
+                      "Joined rooms",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ),
+                  Tab(
+                    icon: Text(
+                      "Inactive rooms",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
@@ -78,11 +87,13 @@ class _RoomPageState extends ConsumerState<RoomPage>
                 ]),
             Expanded(
               child: TabBarView(
+                physics: const BouncingScrollPhysics(),
                 controller: tabController,
                 children: const [
                   AllRoomsPage(),
                   MyRoomsPage(),
-                  AllInactiveRoomsPage(),
+                  AllJoinedRoomsPage(),
+                  ExpiredRoomsPage()
                 ],
               ),
             )

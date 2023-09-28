@@ -37,15 +37,15 @@ class DateSelectorListview extends ConsumerWidget {
                   final singleTimeAvailable = data[index];
 
                   final weekdayName = DateFormat('EEEE')
-                      .format(singleTimeAvailable.date.toDate());
+                      .format(singleTimeAvailable.date!.toDate());
 
-                  final date = singleTimeAvailable.date.toDate().day;
-                  final monthNo = singleTimeAvailable.date.toDate().month;
+                  final date = singleTimeAvailable.date!.toDate().day;
+                  final monthNo = singleTimeAvailable.date!.toDate().month;
                   String monthName =
                       DateFormat('MMMM').format(DateTime(2023, monthNo));
 
                   bool idSelected =
-                      timeAvailibiltyFromTimeSelected!.date.toDate().day ==
+                      timeAvailibiltyFromTimeSelected!.date!.toDate().day ==
                           date;
 
                   return data.isNotEmpty

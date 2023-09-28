@@ -61,7 +61,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
   void unlockSelectedTimeSlots({required bool willPop}) {
     ref.read(turfControllerProvider).unlockingSelectedTimeSlot(
         context: context,
-        selectedAvailability: ref.read(availibiltyNotifierProvider),
+        selectedAvailability: ref.read(availibiltyNotifierProvider)!,
         selectedSlot: ref.read(selectedTimeTableNotifierProvider)!,
         slotType: ref.read(slotTypeNotifierProvider)!);
     ref.invalidate(selectedTimeTableNotifierProvider);
@@ -89,11 +89,12 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     final endTime = DateFormat("hh:mm a").format(timelist.endTime.toDate());
 
     //* Use DateFormat to format the date, month, and weekday
-    DateTime dateTime = avalibilty.date.toDate();
+    DateTime dateTime = avalibilty.date!.toDate();
 
-    String formattedMonth = DateFormat('MMMM').format(avalibilty.date.toDate());
+    String formattedMonth =
+        DateFormat('MMMM').format(avalibilty.date!.toDate());
     String formattedWeekday =
-        DateFormat('EEEE').format(avalibilty.date.toDate());
+        DateFormat('EEEE').format(avalibilty.date!.toDate());
 
     String _getFormattedDay(int day) {
       if (day >= 11 && day <= 13) {
