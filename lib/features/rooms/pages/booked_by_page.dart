@@ -35,8 +35,8 @@ class BookedByPage extends ConsumerWidget {
                   subtitle: Text(room.turfName),
                 ),
                 ListTile(
-                  title: const Text("Dimension:"),
-                  subtitle: Text(room.dimension),
+                  title: const Text("versus:"),
+                  subtitle: Text(room.whatByWhat),
                 ),
                 ListTile(
                   title: const Text("Phone Number:"),

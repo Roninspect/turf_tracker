@@ -45,7 +45,7 @@ class RoomsCard extends ConsumerWidget {
                 Container(
                   width: 120,
                   decoration: const BoxDecoration(
-                      color: greenColor,
+                      color: Colors.redAccent,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: Column(
                     children: [
@@ -132,7 +132,7 @@ class RoomsCard extends ConsumerWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      room.dimension,
+                                      room.whatByWhat,
                                       style: const TextStyle(
                                           fontSize: 15, height: 0),
                                     ),

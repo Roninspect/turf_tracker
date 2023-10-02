@@ -1,7 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:turf_tracker/models/amenities.dart';
-import 'package:turf_tracker/models/dimensions.dart';
+import 'package:turf_tracker/models/discount.dart';
 import 'package:turf_tracker/models/rating.dart';
+
+import 'amenities.dart';
 
 class Turf {
   String name;
@@ -22,6 +22,7 @@ class Turf {
   List<String> sportsAllowed;
   List<Amenities> amenities;
   List<String> images;
+  List<Discount> discounts;
   Turf({
     required this.name,
     required this.turfId,
@@ -41,6 +42,7 @@ class Turf {
     required this.sportsAllowed,
     required this.amenities,
     required this.images,
+    required this.discounts,
   });
 
   Turf copyWith({
@@ -59,10 +61,10 @@ class Turf {
     String? maximumPrice,
     num? commission_percentage,
     List<Rating>? ratings,
-    List<Dimensions>? dimensions,
     List<String>? sportsAllowed,
     List<Amenities>? amenities,
     List<String>? images,
+    List<Discount>? discounts,
   }) {
     return Turf(
       name: name ?? this.name,
@@ -84,6 +86,7 @@ class Turf {
       sportsAllowed: sportsAllowed ?? this.sportsAllowed,
       amenities: amenities ?? this.amenities,
       images: images ?? this.images,
+      discounts: discounts ?? this.discounts,
     );
   }
 
@@ -103,43 +106,50 @@ class Turf {
       "startingPrice": startingPrice,
       "maximumPrice": maximumPrice,
       "commission_percentage": commission_percentage,
-      "ratings": ratings,
+      "ratings": ratings.map((e) => e.toMap()).toList(),
       'sportsAllowed': sportsAllowed,
       'amenities': amenities.map((x) => x.toMap()).toList(),
       'images': images,
+      "discounts": discounts,
     };
   }
 
   factory Turf.fromMap(Map<String, dynamic> map) {
     return Turf(
-        name: map['name'] as String,
-        turfId: map['turfId'] as String,
-        description: map["description"] as String,
-        district: map['district'] as String,
-        startWeekday: map['startWeekday'] as String,
-        endWeekday: map['endWeekday'] as String,
-        startTime: map['startTime'] as String,
-        endTime: map['endTime'] as String,
-        address: map['address'] as String,
-        latitude: map["latitude"] as String,
-        longitude: map['longitude'] as String,
-        startingPrice: map['startingPrice'] as String,
-        maximumPrice: map['maximumPrice'] as String,
-        commission_percentage: map['commission_percentage'] as num,
-        ratings: List<Rating>.from(
-          (map['ratings'] as List<dynamic>).map<Rating>(
-            (x) => Rating.fromMap(x as Map<String, dynamic>),
-          ),
+      name: map['name'] as String,
+      turfId: map['turfId'] as String,
+      description: map["description"] as String,
+      district: map['district'] as String,
+      startWeekday: map['startWeekday'] as String,
+      endWeekday: map['endWeekday'] as String,
+      startTime: map['startTime'] as String,
+      endTime: map['endTime'] as String,
+      address: map['address'] as String,
+      latitude: map["latitude"] as String,
+      longitude: map['longitude'] as String,
+      startingPrice: map['startingPrice'] as String,
+      maximumPrice: map['maximumPrice'] as String,
+      commission_percentage: map['commission_percentage'] as num,
+      ratings: List<Rating>.from(
+        (map['ratings'] as List<dynamic>).map<Rating>(
+          (x) => Rating.fromMap(x as Map<String, dynamic>),
         ),
-        sportsAllowed: List<String>.from(
-            (map['sportsAllowed'] as List<dynamic>).map((e) => e)),
-        amenities: List<Amenities>.from(
-          (map['amenities'] as List<dynamic>).map<Amenities>(
-            (x) => Amenities.fromMap(x as Map<String, dynamic>),
-          ),
+      ),
+      sportsAllowed: List<String>.from(
+          (map['sportsAllowed'] as List<dynamic>).map((e) => e)),
+      amenities: List<Amenities>.from(
+        (map['amenities'] as List<dynamic>).map<Amenities>(
+          (x) => Amenities.fromMap(x as Map<String, dynamic>),
         ),
-        images: List<String>.from(
-          (map['images'] as List<dynamic>).map((e) => e),
-        ));
+      ),
+      images: List<String>.from(
+        (map['images'] as List<dynamic>).map((e) => e),
+      ),
+      discounts: List<Discount>.from(
+        (map['discounts'] as List<dynamic>).map<Discount>(
+          (x) => Discount.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+    );
   }
 }

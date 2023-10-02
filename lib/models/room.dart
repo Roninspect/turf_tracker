@@ -17,7 +17,7 @@ class Room {
   final String turfId;
   final String turfName;
   final String turfAddress;
-  final String dimension;
+  final String whatByWhat;
   final String bookedBy;
   final Timestamp startTime;
   final Timestamp endTime;
@@ -37,7 +37,7 @@ class Room {
       required this.turfId,
       required this.turfName,
       required this.turfAddress,
-      required this.dimension,
+      required this.whatByWhat,
       required this.bookedBy,
       required this.startTime,
       required this.endTime,
@@ -58,7 +58,7 @@ class Room {
       String? turfId,
       String? turfName,
       String? turfAddress,
-      String? dimension,
+      String? whatByWhat,
       String? bookedBy,
       Timestamp? startTime,
       Timestamp? endTime,
@@ -79,7 +79,7 @@ class Room {
       turfId: turfId ?? this.turfId,
       turfName: turfName ?? this.turfName,
       turfAddress: turfAddress ?? this.turfAddress,
-      dimension: dimension ?? this.dimension,
+      whatByWhat: whatByWhat ?? this.whatByWhat,
       bookedBy: bookedBy ?? this.bookedBy,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
@@ -103,7 +103,7 @@ class Room {
       'turfId': turfId,
       'turfName': turfName,
       'turfAddress': turfAddress,
-      'dimension': dimension,
+      'whatByWhat': whatByWhat,
       'bookedBy': bookedBy,
       'startTime': startTime,
       'endTime': endTime,
@@ -127,7 +127,7 @@ class Room {
       turfId: map['turfId'] as String,
       turfName: map['turfName'] as String,
       turfAddress: map['turfAddress'] as String,
-      dimension: map['dimension'] as String,
+      whatByWhat: map['whatByWhat'] as String,
       bookedBy: map['bookedBy'] as String,
       startTime: map['startTime'] as Timestamp,
       endTime: map['endTime'] as Timestamp,
@@ -143,7 +143,7 @@ class Room {
 
   @override
   String toString() {
-    return 'Room(roomId: $roomId, uid: $uid, isActive: $isActive, bookerNumber: $bookerNumber, turfId: $turfId, turfName: $turfName, turfAddress: $turfAddress, dimension: $dimension, bookedBy: $bookedBy, startTime: $startTime, endTime: $endTime, totalPrice: $totalPrice, district: $district)';
+    return 'Room(roomId: $roomId, uid: $uid, isActive: $isActive, bookerNumber: $bookerNumber, turfId: $turfId, turfName: $turfName, turfAddress: $turfAddress, dimension: $whatByWhat, bookedBy: $bookedBy, startTime: $startTime, endTime: $endTime, totalPrice: $totalPrice, district: $district)';
   }
 
   @override
@@ -161,7 +161,7 @@ class Room {
         other.turfId == turfId &&
         other.turfName == turfName &&
         other.turfAddress == turfAddress &&
-        other.dimension == dimension &&
+        other.whatByWhat == whatByWhat &&
         other.bookedBy == bookedBy &&
         other.startTime == startTime &&
         other.endTime == endTime &&
@@ -182,7 +182,7 @@ class Room {
         turfId.hashCode ^
         turfName.hashCode ^
         turfAddress.hashCode ^
-        dimension.hashCode ^
+        whatByWhat.hashCode ^
         bookedBy.hashCode ^
         startTime.hashCode ^
         endTime.hashCode ^

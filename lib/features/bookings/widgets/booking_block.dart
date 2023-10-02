@@ -125,7 +125,7 @@ class BookingTile extends ConsumerWidget {
                                                         booking.turfAddress,
                                                     bookingId:
                                                         booking.bookingId,
-                                                    dimension:
+                                                    whatByWhat:
                                                         booking.whatByWhat,
                                                     bookedBy:
                                                         booking.bookerName,

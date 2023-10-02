@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:intl/intl.dart';
+import 'package:turf_tracker/common/enums/status.dart';
 
 import 'package:turf_tracker/common/failure.dart';
 import 'package:turf_tracker/common/typedefs.dart';
@@ -16,6 +17,7 @@ import 'package:turf_tracker/models/rating.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../common/enums/slot_type.dart';
 import '../provider/slot_type_selector_provider.dart';
 
 final turfRepositoryProvider = Provider<TurfRepository>((ref) {
@@ -69,6 +71,7 @@ class TurfRepository {
         .collection("time_availibilty")
         .where("turfId", isEqualTo: turfId)
         .where("did", isEqualTo: did)
+        .where("status", isEqualTo: Status.Active.name)
         .snapshots()
         .map((event) =>
             event.docs.map((e) => Availibilty.fromMap(e.data())).toList());
@@ -85,26 +88,22 @@ class TurfRepository {
       bool shouldMarkUnavailable(TimeTable selectedSlot, TimeTable timeTable) {
         final startTime1 = selectedSlot.startTime.toDate();
         final endTime1 = selectedSlot.endTime.toDate();
-        final timeSlotStartTime = timeTable.startTime.toDate();
-        final timeSlotEndTime = timeTable.endTime.toDate();
-
+        final startTime2 = timeTable.startTime.toDate();
+        final endTime2 = timeTable.endTime.toDate();
         //checking intersection
 
-        bool isIntersecting = (timeSlotStartTime.isAfter(startTime1) &&
-                timeSlotStartTime.isBefore(endTime1)) ||
-            (timeSlotEndTime.isAfter(startTime1) &&
-                timeSlotEndTime.isBefore(endTime1)) ||
-            (timeSlotStartTime.isBefore(startTime1) &&
-                timeSlotEndTime.isAfter(endTime1));
+        bool isIntersecting =
+            !(endTime1.isBefore(startTime2) || startTime1.isAfter(endTime2));
 
         //checking similar
 
-        bool isMatching = startTime1.isAtSameMomentAs(timeSlotStartTime) &&
-            endTime1.isAtSameMomentAs(timeSlotEndTime);
+        bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
+            endTime1.isAtSameMomentAs(endTime2);
 
         // checking 31 minutes
         bool isAfter30Minutes = false;
-        if (timeTable.startTime
+        if (slotType == SlotType.oneHalfHourAvailibilty &&
+            timeTable.startTime
                     .toDate()
                     .toUtc()
                     .difference(selectedSlot.endTime.toDate().toUtc())
@@ -118,11 +117,6 @@ class TurfRepository {
                 31) {
           isAfter30Minutes = true;
         }
-        print(
-            'Selected: ${DateFormat.jm().format(selectedSlot.startTime.toDate())} To ${DateFormat.jm().format(selectedSlot.endTime.toDate())}');
-        print(
-            '${DateFormat.jm().format(timeTable.startTime.toDate())} To ${DateFormat.jm().format(timeTable.endTime.toDate())}');
-        print(isAfter30Minutes);
 
         return isIntersecting || isMatching || isAfter30Minutes;
       }
@@ -183,44 +177,43 @@ class TurfRepository {
   }) async {
     try {
       bool shouldMarkUnavailable(TimeTable selectedSlot, TimeTable timeTable) {
+        // final startTime1 = selectedSlot.startTime.toDate();
+        // final endTime1 = selectedSlot.endTime.toDate();
+        // final timeSlotStartTime = timeTable.startTime.toDate();
+        // final timeSlotEndTime = timeTable.endTime.toDate();
+
         final startTime1 = selectedSlot.startTime.toDate();
         final endTime1 = selectedSlot.endTime.toDate();
-        final timeSlotStartTime = timeTable.startTime.toDate();
-        final timeSlotEndTime = timeTable.endTime.toDate();
-
-        //     final startTime1 = selectedSlot.startTime.toDate();
-        // final endTime1 = selectedSlot.endTime.toDate();
-        // final startTime2 = timeTable.startTime.toDate();
-        // final endTime2 = timeTable.endTime.toDate();
-
-        // //checking intersection
-
-        // bool isIntersecting =
-        //     (startTime1.isAfter(startTime2) && startTime1.isBefore(endTime2)) ||
-        //         (endTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) ||
-        //         (startTime1.isBefore(startTime2) && endTime1.isAfter(endTime2));
-
-        // //checking similar
-
-        // bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
-        //     endTime1.isAtSameMomentAs(endTime2);
+        final startTime2 = timeTable.startTime.toDate();
+        final endTime2 = timeTable.endTime.toDate();
 
         //checking intersection
 
-        bool isIntersecting = (timeSlotStartTime.isAfter(startTime1) &&
-                timeSlotStartTime.isBefore(endTime1)) ||
-            (timeSlotEndTime.isAfter(startTime1) &&
-                timeSlotEndTime.isBefore(endTime1)) ||
-            (timeSlotStartTime.isBefore(startTime1) &&
-                timeSlotEndTime.isAfter(endTime1));
+        bool isIntersecting =
+            !(endTime1.isBefore(startTime2) || startTime1.isAfter(endTime2));
 
         //checking similar
 
-        bool isMatching = startTime1.isAtSameMomentAs(timeSlotStartTime) &&
-            endTime1.isAtSameMomentAs(timeSlotEndTime);
+        bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
+            endTime1.isAtSameMomentAs(endTime2);
+
+        //checking intersection
+
+        // bool isIntersecting = (timeSlotStartTime.isAfter(startTime1) &&
+        //         timeSlotStartTime.isBefore(endTime1)) ||
+        //     (timeSlotEndTime.isAfter(startTime1) &&
+        //         timeSlotEndTime.isBefore(endTime1)) ||
+        //     (timeSlotStartTime.isBefore(startTime1) &&
+        //         timeSlotEndTime.isAfter(endTime1));
+
+        // //checking similar
+
+        // bool isMatching = startTime1.isAtSameMomentAs(timeSlotStartTime) &&
+        //     endTime1.isAtSameMomentAs(timeSlotEndTime);
         // checking 31 minutes
         bool isAfter30Minutes = false;
-        if (timeTable.startTime
+        if (slotType == SlotType.oneHalfHourAvailibilty &&
+            timeTable.startTime
                     .toDate()
                     .toUtc()
                     .difference(selectedSlot.endTime.toDate().toUtc())
@@ -234,11 +227,6 @@ class TurfRepository {
                 31) {
           isAfter30Minutes = true;
         }
-        print(
-            'Selected: ${DateFormat.jm().format(selectedSlot.startTime.toDate())} To ${DateFormat.jm().format(selectedSlot.endTime.toDate())}');
-        print(
-            '${DateFormat.jm().format(timeTable.startTime.toDate())} To ${DateFormat.jm().format(timeTable.endTime.toDate())}');
-        print(isAfter30Minutes);
 
         return isIntersecting || isMatching || isAfter30Minutes;
       }
@@ -303,38 +291,45 @@ class TurfRepository {
       bool shouldMarkUnavailable(TimeTable selectedSlot, TimeTable timeTable) {
         final startTime1 = selectedSlot.startTime.toDate();
         final endTime1 = selectedSlot.endTime.toDate();
-        final timeSlotStartTime = timeTable.startTime.toDate();
-        final timeSlotEndTime = timeTable.endTime.toDate();
+        final startTime2 = timeTable.startTime.toDate();
+        final endTime2 = timeTable.endTime.toDate();
 
-        //checking intersection
-
-        bool isIntersecting = (timeSlotStartTime.isAfter(startTime1) &&
-                timeSlotStartTime.isBefore(endTime1)) ||
-            (timeSlotEndTime.isAfter(startTime1) &&
-                timeSlotEndTime.isBefore(endTime1)) ||
-            (timeSlotStartTime.isBefore(startTime1) &&
-                timeSlotEndTime.isAfter(endTime1));
+        // bool isIntersecting =
+        //     (startTime1.isAfter(startTime2) && startTime1.isBefore(endTime2)) ||
+        //         (endTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) ||
+        //         (startTime1.isBefore(startTime2) && endTime1.isAfter(endTime2));
+        bool isIntersecting =
+            !(endTime1.isBefore(startTime2) || startTime1.isAfter(endTime2));
 
         //checking similar
 
-        bool isMatching = startTime1.isAtSameMomentAs(timeSlotStartTime) &&
-            endTime1.isAtSameMomentAs(timeSlotEndTime);
+        bool isMatching = startTime1.isAtSameMomentAs(startTime2) &&
+            endTime1.isAtSameMomentAs(endTime2);
 
-        // checking 31 minutes
+        // // checking 31 minutes
+        // bool isAfter30Minutes = false;
+        // if (slotType == SlotType.oneHalfHourAvailibilty &&
+        //     timeTable.startTime
+        //             .toDate()
+        //             .toUtc()
+        //             .difference(selectedSlot.endTime.toDate().toUtc())
+        //             .inMinutes >=
+        //         30 &&
+        //     timeTable.startTime
+        //             .toDate()
+        //             .toUtc()
+        //             .difference(selectedSlot.endTime.toDate().toUtc())
+        //             .inMinutes <=
+        //         31) {
+        //   isAfter30Minutes = true;
+        // }
+
+        // Checking for a 31-minute gap
         bool isAfter30Minutes = false;
         if (slotType == SlotType.oneHalfHourAvailibilty &&
-            timeTable.startTime
-                    .toDate()
-                    .toUtc()
-                    .difference(selectedSlot.endTime.toDate().toUtc())
-                    .inMinutes >=
-                30 &&
-            timeTable.startTime
-                    .toDate()
-                    .toUtc()
-                    .difference(selectedSlot.endTime.toDate().toUtc())
-                    .inMinutes <=
-                31) {
+            startTime2.isAfter(endTime1) &&
+            startTime2.difference(endTime1).inMinutes >= 30 &&
+            startTime2.difference(endTime1).inMinutes <= 31) {
           isAfter30Minutes = true;
         }
 
@@ -359,29 +354,16 @@ class TurfRepository {
       final updatedOneHalfHourSlots = markSlotsUnavailable(
           selectedAvailability.oneHalfHourAvailibilty, selectedSlot);
 
-      return slotType == SlotType.oneHalfHourAvailibilty
-          ? right(await _firestore
-              .collection('time_availibilty')
-              .doc(selectedAvailability.timeId)
-              .update({
-              'oneHourAvailibilty': updatedOneHourSlots
-                  .map((timeTable) => timeTable.toMap())
-                  .toList(),
-              'oneHalfHourAvailability': updatedOneHalfHourSlots
-                  .map((timeTable) => timeTable.toMap())
-                  .toList(),
-            }))
-          : right(await _firestore
-              .collection('time_availibilty')
-              .doc(selectedAvailability.timeId) // Replace with your document ID
-              .update({
-              'oneHourAvailibilty': updatedOneHourSlots
-                  .map((timeTable) => timeTable.toMap())
-                  .toList(),
-              'oneHalfHourAvailability': updatedOneHalfHourSlots
-                  .map((timeTable) => timeTable.toMap())
-                  .toList(),
-            }));
+      return right(await _firestore
+          .collection('time_availibilty')
+          .doc(selectedAvailability.timeId)
+          .update({
+        'oneHourAvailibilty':
+            updatedOneHourSlots.map((timeTable) => timeTable.toMap()).toList(),
+        'oneHalfHourAvailability': updatedOneHalfHourSlots
+            .map((timeTable) => timeTable.toMap())
+            .toList(),
+      }));
     } catch (e, stk) {
       if (kDebugMode) {
         print(stk);

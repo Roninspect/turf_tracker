@@ -11,8 +11,8 @@ import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/turfs/provider/slot_type_selector_provider.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:uuid/uuid.dart';
-import '../../../common/custom_snackbar.dart';
 import '../../../models/booking.dart';
+import '../../../models/discount.dart';
 import '../../bookings/controller/booking_controller.dart';
 import '../controller/turf_controller.dart';
 import '../provider/availbilty_provider.dart';
@@ -34,13 +34,14 @@ class PaymentConfirmPage extends ConsumerStatefulWidget {
 class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     with WidgetsBindingObserver {
   final flutterBkash = FlutterBkash();
+  late Timer timer;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    Timer(const Duration(minutes: 3), () {
+    timer = Timer(const Duration(minutes: 3), () {
       unlockSelectedTimeSlots(willPop: true);
     });
   }
@@ -72,6 +73,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     unlockSelectedTimeSlots(willPop: true);
+    timer.cancel();
     super.dispose();
   }
 
@@ -84,17 +86,20 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     final user = ref.watch(userDataNotifierProvider);
 
     //* formatting selectedTime
-    final startTime =
-        DateFormat("hh:mm a").format(timelist!.startTime.toDate());
-    final endTime = DateFormat("hh:mm a").format(timelist.endTime.toDate());
+
+    final startTime = timelist != null
+        ? DateFormat("hh:mm a").format(timelist.startTime.toDate())
+        : "Not Available";
+    final endTime = timelist != null
+        ? DateFormat("hh:mm a").format(timelist.endTime.toDate())
+        : "Not Available";
 
     //* Use DateFormat to format the date, month, and weekday
-    DateTime dateTime = avalibilty.date!.toDate();
+    DateTime dateTime = avalibilty.date.toDate();
 
-    String formattedMonth =
-        DateFormat('MMMM').format(avalibilty.date!.toDate());
+    String formattedMonth = DateFormat('MMMM').format(avalibilty.date.toDate());
     String formattedWeekday =
-        DateFormat('EEEE').format(avalibilty.date!.toDate());
+        DateFormat('EEEE').format(avalibilty.date.toDate());
 
     String _getFormattedDay(int day) {
       if (day >= 11 && day <= 13) {
@@ -116,10 +121,31 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
 
     String finalFormat = '$formattedDay $formattedMonth, $formattedWeekday';
 
-    num totalPrice = timelist.price;
+    num totalPrice = timelist != null ? timelist.price : 0;
     num advancePaid = 500;
 
-    num toBePaidInTurf = totalPrice - advancePaid;
+    bool discountApplicable =
+        widget.turf.discounts.any((e) => user.uid == e.uid);
+
+    Discount? matchingDiscount = widget.turf.discounts.firstWhere(
+        (e) => user.uid == e.uid,
+        orElse: () => Discount(uid: "", userName: "userName", amount: 0)
+        // Handle the case where no matching discount is found
+        );
+
+    num discountPercent = 0;
+
+// Now, matchingDiscount contains the Discount object or null if no match was found
+    if (matchingDiscount.amount != 0) {
+      discountPercent = matchingDiscount.amount;
+    }
+
+    num toBePaidInTurf = discountApplicable
+        ? (totalPrice - (totalPrice * (discountPercent / 100))) - advancePaid
+        : totalPrice - advancePaid;
+
+    num turfOwnerWillGet =
+        advancePaid - (totalPrice * (widget.turf.commission_percentage / 100));
 
     return WillPopScope(
       onWillPop: () async {
@@ -216,7 +242,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Advance(To book the slots):",
+                    "Advance(To book the slot)",
                     style: TextStyle(fontSize: 20),
                   ),
                   Text(
@@ -226,6 +252,21 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                 ],
               ),
               const SizedBox(height: 30),
+              if (discountApplicable)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Discounts Given By Turf",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      "$discountPercent%",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -234,7 +275,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
                     style: TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "BDT ${totalPrice - advancePaid}",
+                    "BDT $toBePaidInTurf",
                     style: const TextStyle(fontSize: 20),
                   ),
                 ],
@@ -247,66 +288,68 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: greenColor,
           onPressed: () async {
-            ref.read(turfControllerProvider).updateTimeSlotAfterBooking(
-                selectedSlot: timelist,
-                slotType: selectedSlotType!,
-                selectedAvailibilty: avalibilty,
-                context: context);
-            // await flutterBkash.pay(
-            //   context: context, // BuildContext context
-            //   amount: totalPrice.toDouble(), // amount as double
-            //   merchantInvoiceNumber: "invoice123",
-            // );
+            if (timelist != null) {
+              ref.read(turfControllerProvider).updateTimeSlotAfterBooking(
+                  selectedSlot: timelist,
+                  slotType: selectedSlotType!,
+                  selectedAvailibilty: avalibilty,
+                  context: context);
 
-            // if (avalibilty ==
-            //         Availibilty(
-            //             timeId: "",
-            //             turfId: "",
-            //             did: "",
-            //             status: "",
-            //             date: Timestamp(0, 0),
-            //             dimension: "",
-            //             availibility: []) ||
-            //     listofTime == []) {
-            //   showSnackbar(
-            //       context: context, text: "Please Select Date and Time Slot");
-            // } else {
+              // await flutterBkash.pay(
+              //   context: context, // BuildContext context
+              //   amount: totalPrice.toDouble(), // amount as double
+              //   merchantInvoiceNumber: "invoice123",
+              // );
 
-            ref
-                .read(bookingControllerProvider.notifier)
-                .saveBookingDataToFirestore(
-                    bookingModel: Booking(
-                        bookingId: const Uuid().v4(),
-                        bookerid: user.uid,
-                        bookerName: user.name,
-                        turfName: widget.turf.name,
-                        turfAddress: widget.turf.address,
-                        startTime: timelist.startTime,
-                        endTime: timelist.endTime,
-                        whatByWhat: dimensionSlected,
-                        date: timelist.startTime,
-                        phoneNumber: user.phoneNumber,
-                        transactionId: const Uuid().v4(),
-                        paymentId: const Uuid().v4(),
-                        paymentDateMade: Timestamp.now().toString(),
-                        totalPrice: totalPrice,
-                        paidInAdvance: advancePaid,
-                        toBePaidInTurf: toBePaidInTurf,
-                        district: widget.turf.district,
-                        turfId: widget.turf.turfId,
-                        isShared: false),
-                    context: context);
+              // if (avalibilty ==
+              //         Availibilty(
+              //             timeId: "",
+              //             turfId: "",
+              //             did: "",
+              //             status: "",
+              //             date: Timestamp(0, 0),
+              //             dimension: "",
+              //             availibility: []) ||
+              //     listofTime == []) {
+              //   showSnackbar(
+              //       context: context, text: "Please Select Date and Time Slot");
+              // } else {
 
-            //   //** invalidating or resetting the selected data */
-            ref.invalidate(availibiltyNotifierProvider);
-            ref.invalidate(selectedTimeTableNotifierProvider);
+              ref
+                  .read(bookingControllerProvider.notifier)
+                  .saveBookingDataToFirestore(
+                      bookingModel: Booking(
+                          bookingId: const Uuid().v4(),
+                          bookerid: user.uid,
+                          bookerName: user.name,
+                          turfName: widget.turf.name,
+                          turfAddress: widget.turf.address,
+                          startTime: timelist.startTime,
+                          endTime: timelist.endTime,
+                          whatByWhat: dimensionSlected,
+                          date: timelist.startTime,
+                          phoneNumber: user.phoneNumber,
+                          transactionId: const Uuid().v4(),
+                          paymentId: const Uuid().v4(),
+                          paymentDateMade: Timestamp.now().toString(),
+                          totalPrice: totalPrice,
+                          paidInAdvance: advancePaid,
+                          toBePaidInTurf: toBePaidInTurf,
+                          district: widget.turf.district,
+                          turfId: widget.turf.turfId,
+                          isShared: false),
+                      context: context);
 
-            context.pop();
+              ref.read(bookingControllerProvider.notifier).updateBalance(
+                  turfId: widget.turf.turfId,
+                  amountAfterCommission: turfOwnerWillGet);
 
-            showSnackbar(
-                context: context,
-                color: Colors.green,
-                text: "Booked Successfully");
+              //   //** invalidating or resetting the selected data */
+              ref.invalidate(availibiltyNotifierProvider);
+              ref.invalidate(selectedTimeTableNotifierProvider);
+
+              context.pop();
+            }
           },
           label: const Text(
             "Proceed To Payment",

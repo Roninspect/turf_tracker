@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/common/custom_snackbar.dart';
 import 'package:turf_tracker/features/turfs/repository/turf_repository.dart';
+import '../../../common/enums/slot_type.dart';
 import '../../../models/availibilty.dart';
 import '../../../models/booking.dart';
 import '../../../models/dimensions.dart';
@@ -178,7 +179,7 @@ class TurfController {
 
     res.fold(
       (l) => showSnackbar(context: context, text: l.message),
-      (r) => showSnackbar(context: context, text: "Booking is Successful"),
+      (r) => null,
     );
   }
 

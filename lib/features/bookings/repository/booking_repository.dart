@@ -77,4 +77,35 @@ class BookingRepository {
         .snapshots()
         .map((event) => event.docs.map((e) => Room.fromMap(e.data())).toList());
   }
+
+  //** update balance in turf_owners account */
+
+  FutureVoid updateBalance(
+      {required String turfId, required num amountAfterCommission}) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> twSnapshots = await _firestore
+          .collection("turf_owners")
+          .where("turfId", isEqualTo: turfId)
+          .get();
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> owner
+          in twSnapshots.docs) {
+        // Get the existing balance
+        num currentBalance = owner.data()['balance'];
+
+        // Calculate the new balance (for example, subtracting the commission)
+        num newBalance = currentBalance + amountAfterCommission;
+
+        // Update the balance in Firestore
+        await _firestore
+            .collection('turf_owners')
+            .doc(owner.id)
+            .update({'balance': newBalance});
+      }
+
+      return right(null);
+    } on FirebaseException catch (e) {
+      return left(Failure(e.message!));
+    }
+  }
 }

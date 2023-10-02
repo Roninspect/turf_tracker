@@ -1,9 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum SlotType {
-  oneHourAvailibilty,
-  oneHalfHourAvailibilty,
-}
+import '../../../common/enums/slot_type.dart';
 
 final slotTypeNotifierProvider =
     NotifierProvider<SlotTypeNotifier, SlotType?>(SlotTypeNotifier.new);

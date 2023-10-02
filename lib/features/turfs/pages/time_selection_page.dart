@@ -6,12 +6,14 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:turf_tracker/common/colors.dart';
+import 'package:turf_tracker/common/custom_snackbar.dart';
 import 'package:turf_tracker/features/turfs/controller/turf_controller.dart';
 import 'package:turf_tracker/features/turfs/provider/availbilty_provider.dart';
 import 'package:turf_tracker/features/turfs/provider/selected_timetable_provider.dart';
 import 'package:turf_tracker/features/turfs/widgets/date_selector_listview.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:turf_tracker/router/router.dart';
+import '../../../common/enums/slot_type.dart';
 import '../../../models/availibilty.dart';
 import '../provider/slot_type_selector_provider.dart';
 
@@ -155,7 +157,7 @@ class TimeSelectionPage extends ConsumerWidget {
                     .watch(getTimeAvailibiltiesProvider(TripleArgsModel(
                         turfId: timeAvailibiltyFromTimeSelected.turfId,
                         dimensionId: timeAvailibiltyFromTimeSelected.did,
-                        selectedDate: timeAvailibiltyFromTimeSelected.date!)))
+                        selectedDate: timeAvailibiltyFromTimeSelected.date)))
                     .when(
                       data: (data) {
                         //** sorting the list beforehand from day to night */
@@ -192,6 +194,20 @@ class TimeSelectionPage extends ConsumerWidget {
 
                             return GestureDetector(
                               onTap: () {
+                                if (singleTimeAvailable.isLocked) {
+                                  showSnackbar(
+                                      context: context,
+                                      text:
+                                          "Somebody is considering booking this slot. Please try again in 5 to 10 minutes.",
+                                      color: Colors.orangeAccent);
+                                } else if (singleTimeAvailable.isAvailable ==
+                                    false) {
+                                  showSnackbar(
+                                      context: context,
+                                      text:
+                                          "This slot is already booked, Please select another slot",
+                                      color: Colors.red);
+                                }
                                 ref
                                     .read(selectedTimeTableNotifierProvider
                                         .notifier)
@@ -304,3 +320,5 @@ class TimeSelectionPage extends ConsumerWidget {
         ));
   }
 }
+ //is the grammar correct in this line "Someone is Considering to book this slot, Please try again later"?
+

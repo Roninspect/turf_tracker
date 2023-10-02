@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/common/colors.dart';
@@ -60,5 +61,23 @@ class BookingController extends StateNotifier<bool> {
 
   Stream<List<Room>> isSharedAlready({required String bookingId}) {
     return bookingRepository.isSharedAlready(bookingId: bookingId);
+  }
+
+  //** update turf owners balance after successfull booking */
+
+  Future<void> updateBalance(
+      {required String turfId, required num amountAfterCommission}) async {
+    final res = await bookingRepository.updateBalance(
+        turfId: turfId, amountAfterCommission: amountAfterCommission);
+
+    res.fold((l) {
+      if (kDebugMode) {
+        print(l);
+      }
+    }, (r) {
+      if (kDebugMode) {
+        print("successfully added to balance");
+      }
+    });
   }
 }

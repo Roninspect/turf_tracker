@@ -60,6 +60,7 @@ class RoomRepository {
         .collection("rooms")
         .where("district", isEqualTo: district)
         .where("isActive", isEqualTo: true)
+        .where("isExpired", isEqualTo: false)
         .snapshots()
         .map(
           (event) => event.docs.map((e) => Room.fromMap(e.data())).toList(),
@@ -78,6 +79,7 @@ class RoomRepository {
           ),
         )
         .where("isActive", isEqualTo: false)
+        .where("isExpired", isEqualTo: false)
         .snapshots()
         .map(
           (event) => event.docs.map((e) => Room.fromMap(e.data())).toList(),
@@ -88,6 +90,7 @@ class RoomRepository {
     return _firestore
         .collection("rooms")
         .where("uid", isEqualTo: uid)
+        .where("isExpired", isEqualTo: false)
         .snapshots()
         .map(
           (event) => event.docs.map((e) => Room.fromMap(e.data())).toList(),
@@ -100,5 +103,17 @@ class RoomRepository {
         .doc(roomId)
         .snapshots()
         .map((event) => Room.fromMap(event.data() as Map<String, dynamic>));
+  }
+
+  Query<Room> getExpiredRoomsByUid({required String uid}) {
+    return _firestore
+        .collection('rooms')
+        .where("isExpired", isEqualTo: true)
+        .where("uid", isEqualTo: uid)
+        .withConverter<Room>(
+          fromFirestore: (snapshot, _) =>
+              Room.fromMap(snapshot.data() as Map<String, dynamic>),
+          toFirestore: (user, _) => user.toMap(),
+        );
   }
 }
