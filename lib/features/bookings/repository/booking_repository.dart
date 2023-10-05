@@ -22,6 +22,7 @@ class BookingRepository {
         .collection('bookings')
         .where("date", isGreaterThan: now)
         .where("bookerid", isEqualTo: uid)
+        .orderBy("date")
         .withConverter<Booking>(
           fromFirestore: (snapshot, _) =>
               Booking.fromMap(snapshot.data() as Map<String, dynamic>),

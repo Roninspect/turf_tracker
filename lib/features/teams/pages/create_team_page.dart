@@ -88,7 +88,7 @@ class _CreateNewTurfPageState extends ConsumerState<CreateNewTurfPage> {
                               bannerImage!,
                               fit: BoxFit.fill,
                             ))
-                        : const  Icon(
+                        : const Icon(
                             Icons.image,
                             size: 200,
                           ),
@@ -191,7 +191,7 @@ class _CreateNewTurfPageState extends ConsumerState<CreateNewTurfPage> {
                       ),
                     ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

@@ -21,7 +21,9 @@ class UserDataNotifier extends StateNotifier<UserModel> {
             rewardsPoint: 0,
             bookingsNo: 0,
             uid: "loading",
-            hasGivenReview: true)) {
+            hasGivenReview: false,
+            hasClosed: false,
+            hasGivenFeedback: false)) {
     fetchData();
   }
 
@@ -44,7 +46,9 @@ class UserDataNotifier extends StateNotifier<UserModel> {
                 bookingsNo: 0,
                 rewardsPoint: 0,
                 uid: "error",
-                hasGivenReview: true);
+                hasGivenReview: true,
+                hasClosed: true,
+                hasGivenFeedback: true);
           },
           loading: () => UserModel(
               email: "loadingg",
@@ -57,7 +61,9 @@ class UserDataNotifier extends StateNotifier<UserModel> {
               rewardsPoint: 0,
               bookingsNo: 0,
               uid: "loadingg",
-              hasGivenReview: true),
+              hasGivenReview: true,
+              hasClosed: true,
+              hasGivenFeedback: true),
         );
   }
 

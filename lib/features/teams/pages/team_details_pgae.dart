@@ -55,8 +55,8 @@ class TeamDetailsPage extends ConsumerWidget {
             children: [
               AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Image.network(
-                    team.teamProfile,
+                  child: CachedNetworkImage(
+                    imageUrl: team.teamProfile,
                     fit: BoxFit.fill,
                   )),
               const SizedBox(height: 20),
@@ -263,28 +263,28 @@ class TeamDetailsPage extends ConsumerWidget {
                   ],
                 ),
               ),
-              // const SizedBox(
-              //   height: 30,
-              // ),
-              // Container(
-              //   color: Colors.redAccent,
-              //   child: const Row(
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children: [
-              //       Spacer(),
-              //       SizedBox(
-              //         width: 300,
-              //         child: Text(
-              //           "More exciting features coming soon...",
-              //           textAlign: TextAlign.center,
-              //           style: TextStyle(
-              //               fontSize: 25, fontWeight: FontWeight.bold),
-              //         ),
-              //       ),
-              //       Spacer(),
-              //     ],
-              //   ),
-              // )
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                color: Colors.red,
+                child: const Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Spacer(),
+                    SizedBox(
+                      width: 300,
+                      child: Text(
+                        "More exciting features coming soon...",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              )
             ],
           ),
         ),

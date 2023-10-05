@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -50,8 +51,8 @@ class TurfBlock extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(20.0),
                     child: AspectRatio(
                       aspectRatio: 16 / 9,
-                      child: Image.network(
-                        turf.images.first,
+                      child: CachedNetworkImage(
+                        imageUrl: turf.images.first,
                       ),
                     ),
                   ),

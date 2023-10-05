@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,13 +11,11 @@ import 'package:turf_tracker/common/show_dialog.dart';
 import 'package:turf_tracker/features/auth/provider/district_provider.dart';
 import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/profile/controller/profile_controller.dart';
+import 'package:turf_tracker/features/profile/widget/team_listview.dart';
 import 'package:turf_tracker/features/rooms/controller/room_controller.dart';
 import 'package:turf_tracker/features/root/provider/nav_controller.dart';
-
 import '../../../common/filepicker.dart';
-import '../../../models/team.dart';
 import '../../../router/router.dart';
-import '../../teams/controller/team_controller.dart';
 import '../../turfs/provider/district_change_notifier.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -118,27 +115,29 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 ],
               ),
               const SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.all(8.0).copyWith(bottom: 0),
+                child: Text(
+                  user.name,
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      user.name,
-                      style: const TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  const SizedBox(width: 5),
+                  Text(
+                    "UserId: ${user.uid}",
+                    style: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 0.5)),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      user.uid,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  IconButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: user.uid));
+                      },
+                      icon: const Icon(Icons.copy)),
                 ],
               ),
               Padding(
@@ -186,72 +185,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
-                    SizedBox(
-                      height: 120,
-                      child: ref.watch(getUserTeamsProvider).when(
-                            data: (teams) {
-                              return teams.isEmpty
-                                  ? const Center(
-                                      child:
-                                          Text("You haven't joined Any Team"),
-                                    )
-                                  : ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: teams.length,
-                                      itemBuilder: (context, index) {
-                                        Team team = teams[index];
-
-                                        return GestureDetector(
-                                          onTap: () {
-                                            context.pushNamed(
-                                                AppRoutes.teamDetails.name,
-                                                pathParameters: {
-                                                  "teamId": team.tid,
-                                                },
-                                                extra: team);
-                                          },
-                                          child: Stack(
-                                            alignment: Alignment.bottomCenter,
-                                            children: [
-                                              AspectRatio(
-                                                aspectRatio: 16 / 9,
-                                                child: Image.network(
-                                                  team.teamProfile,
-                                                  fit: BoxFit.fill,
-                                                  color: Colors.black45,
-                                                  colorBlendMode:
-                                                      BlendMode.darken,
-                                                ),
-                                              ),
-                                              Text(
-                                                team.name,
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      separatorBuilder: (context, index) {
-                                        return const SizedBox(width: 8);
-                                      },
-                                    );
-                            },
-                            error: (error, stackTrace) {
-                              if (kDebugMode) {
-                                print(stackTrace);
-                              }
-                              return Center(
-                                child: Text(error.toString()),
-                              );
-                            },
-                            loading: () => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                    ),
+                    //** team Listview */
+                    const TeamListView(),
                     const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

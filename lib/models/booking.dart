@@ -1,16 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Booking {
   final String bookingId;
   final String bookerid;
   final String bookerName;
+  final String bookedBy;
   final String turfName;
   final String turfAddress;
   final Timestamp startTime;
   final Timestamp endTime;
+
   final Timestamp date;
+  final Timestamp bookedAt;
   final String phoneNumber;
   final String transactionId;
   final String paymentId;
@@ -26,11 +30,13 @@ class Booking {
       {required this.bookingId,
       required this.bookerid,
       required this.bookerName,
+      required this.bookedBy,
       required this.turfName,
       required this.turfAddress,
       required this.startTime,
       required this.endTime,
       required this.date,
+      required this.bookedAt,
       required this.phoneNumber,
       required this.transactionId,
       required this.paymentId,
@@ -47,6 +53,7 @@ class Booking {
     String? bookingId,
     String? bookerid,
     String? bookerName,
+    String? bookedBy,
     String? turfName,
     String? turfAddress,
     Timestamp? startTime,
@@ -61,6 +68,7 @@ class Booking {
     num? toBePaidInTurf,
     String? whatByWhat,
     String? turfId,
+    Timestamp? bookedAt,
     String? district,
     bool? isShared,
   }) {
@@ -68,11 +76,13 @@ class Booking {
         bookingId: bookingId ?? this.bookingId,
         bookerid: bookerid ?? this.bookerid,
         bookerName: bookerName ?? this.bookerName,
+        bookedBy: bookedBy ?? this.bookedBy,
         turfName: turfName ?? this.turfName,
         turfAddress: turfAddress ?? this.turfAddress,
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
         date: date ?? this.date,
+        bookedAt: bookedAt ?? this.bookedAt,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         transactionId: transactionId ?? this.transactionId,
         paymentId: paymentId ?? this.paymentId,
@@ -91,11 +101,13 @@ class Booking {
       'bookingId': bookingId,
       'bookerid': bookerid,
       'bookerName': bookerName,
+      "bookedBy": bookedBy,
       'turfName': turfName,
       'turfAddress': turfAddress,
       "startTime": startTime,
       "endTime": endTime,
       'date': date,
+      "bookedAt": bookedAt,
       'phoneNumber': phoneNumber,
       'transactionId': transactionId,
       'paymentId': paymentId,
@@ -115,11 +127,13 @@ class Booking {
         bookingId: map['bookingId'] as String,
         bookerid: map['bookerid'] as String,
         bookerName: map['bookerName'] as String,
+        bookedBy: map['bookedBy'] as String,
         turfName: map['turfName'] as String,
         turfAddress: map['turfAddress'] as String,
         startTime: map["startTime"] as Timestamp,
         endTime: map["endTime"] as Timestamp,
         date: map['date'] as Timestamp,
+        bookedAt: map['bookedAt'] as Timestamp,
         phoneNumber: map['phoneNumber'] as String,
         transactionId: map['transactionId'] as String,
         paymentId: map['paymentId'] as String,
@@ -145,10 +159,12 @@ class Booking {
     return other.bookingId == bookingId &&
         other.bookerid == bookerid &&
         other.bookerName == bookerName &&
+        other.bookedBy == bookedBy &&
         other.turfName == turfName &&
         other.turfAddress == turfAddress &&
         other.startTime == startTime &&
         other.endTime == endTime &&
+        other.bookedAt == bookedAt &&
         other.date == date &&
         other.phoneNumber == phoneNumber &&
         other.transactionId == transactionId &&
@@ -167,8 +183,10 @@ class Booking {
     return bookingId.hashCode ^
         bookerid.hashCode ^
         bookerName.hashCode ^
+        bookedBy.hashCode ^
         turfName.hashCode ^
         turfAddress.hashCode ^
+        bookedAt.hashCode ^
         startTime.hashCode ^
         endTime.hashCode ^
         date.hashCode ^

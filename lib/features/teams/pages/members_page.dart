@@ -2,8 +2,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:turf_tracker/models/team.dart';
+import 'package:turf_tracker/router/router.dart';
 
 import '../controller/team_controller.dart';
 
@@ -45,6 +47,13 @@ class MembersPage extends ConsumerWidget {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
+                              onTap: () => context.pushNamed(
+                                  AppRoutes.userProfile.name,
+                                  pathParameters: {
+                                    "teamId": team.tid,
+                                    'id': member
+                                  },
+                                  extra: user),
                               shape: RoundedRectangleBorder(
                                 //<-- SEE HERE
                                 side: const BorderSide(
@@ -61,6 +70,7 @@ class MembersPage extends ConsumerWidget {
                               ),
                               title: Text(
                                 "${user.name} ${team.mods.contains(user.uid) ? '(moderators)' : ''}",
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,

@@ -70,6 +70,8 @@ class SelectDistrictPage extends ConsumerWidget {
                           rewardsPoint: user.rewardsPoint,
                           interestedSports: user.interestedSports,
                           email: user.email,
+                          hasClosed: user.hasClosed,
+                          hasGivenFeedback: user.hasGivenFeedback,
                           hasGivenReview: user.hasGivenReview,
                           bookingsNo: user.bookingsNo),
                       context: context);

@@ -1,10 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Availibilty extends Equatable {
+class Availibilty {
   final String timeId;
   final String turfId;
   final String did;
@@ -86,21 +84,6 @@ class Availibilty extends Equatable {
 
   factory Availibilty.fromJson(String source) =>
       Availibilty.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool get stringify => true;
-
-  @override
-  List<Object?> get props => [
-        timeId,
-        turfId,
-        did,
-        status,
-        date,
-        dimension,
-        ...oneHalfHourAvailibilty,
-        ...oneHourAvailibilty,
-      ];
 }
 
 // ignore: must_be_immutable
@@ -108,12 +91,14 @@ class TimeTable extends Equatable {
   bool isAvailable;
   bool isLocked;
   num price;
+  Timestamp lockedAt;
   Timestamp startTime;
   Timestamp endTime;
   TimeTable({
     required this.isAvailable,
     required this.isLocked,
     required this.price,
+    required this.lockedAt,
     required this.startTime,
     required this.endTime,
   });
@@ -122,6 +107,7 @@ class TimeTable extends Equatable {
     bool? isAvailable,
     bool? isLocked,
     num? price,
+    Timestamp? lockedAt,
     Timestamp? startTime,
     Timestamp? endTime,
   }) {
@@ -129,6 +115,7 @@ class TimeTable extends Equatable {
       isAvailable: isAvailable ?? this.isAvailable,
       isLocked: isLocked ?? this.isLocked,
       price: price ?? this.price,
+      lockedAt: lockedAt ?? this.lockedAt,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
     );
@@ -139,6 +126,7 @@ class TimeTable extends Equatable {
       'isAvailable': isAvailable,
       'isLocked': isLocked,
       'price': price,
+      "lockedAt": lockedAt,
       'startTime': startTime,
       'endTime': endTime,
     };
@@ -149,6 +137,7 @@ class TimeTable extends Equatable {
       isAvailable: map['isAvailable'] as bool,
       isLocked: map['isLocked'] as bool,
       price: map['price'] as num,
+      lockedAt: map['lockedAt'] as Timestamp,
       startTime: map['startTime'] as Timestamp,
       endTime: map['endTime'] as Timestamp,
     );
@@ -160,5 +149,6 @@ class TimeTable extends Equatable {
       TimeTable.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  List<Object?> get props => [isAvailable, isLocked, price, startTime, endTime];
+  List<Object?> get props =>
+      [isAvailable, isLocked, price, lockedAt, startTime, endTime];
 }

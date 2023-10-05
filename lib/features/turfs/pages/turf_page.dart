@@ -81,6 +81,8 @@ class TurfPage extends ConsumerWidget {
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                     ),
+
+                    //** main turf Listview */
                     const Expanded(
                       child: TurfsListView(),
                     ),
@@ -159,7 +161,10 @@ class TurfPage extends ConsumerWidget {
                                         interestedSports: user.interestedSports,
                                         email: user.email,
                                         bookingsNo: user.bookingsNo,
-                                        hasGivenReview: user.hasGivenReview),
+                                        hasGivenReview: user.hasGivenReview,
+                                        hasClosed: user.hasClosed,
+                                        hasGivenFeedback:
+                                            user.hasGivenFeedback),
                                     context: context);
 
                             ref.read(userDataNotifierProvider);

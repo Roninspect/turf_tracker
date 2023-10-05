@@ -19,7 +19,7 @@ class CustomChip extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: Chip(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         side: BorderSide.none,
         avatar: Icon(
           icon,

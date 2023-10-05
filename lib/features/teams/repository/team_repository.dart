@@ -1,35 +1,24 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:turf_tracker/common/failure.dart';
 import 'package:turf_tracker/common/typedefs.dart';
 import 'package:turf_tracker/models/icon.dart';
-
 import 'package:turf_tracker/models/team.dart';
 import 'package:turf_tracker/models/user.dart';
 
-import '../../../common/storage_provider.dart';
-
 final teamRepositoryProvider = Provider<TeamRepository>((ref) {
   return TeamRepository(
-      firestore: FirebaseFirestore.instance,
-      storageRepository: ref.watch(storageRepositoryProvider),
-      ref: ref);
+    firestore: FirebaseFirestore.instance,
+  );
 });
 
 class TeamRepository {
   final FirebaseFirestore _firestore;
-  final StorageRepository _storageRepository;
-  final Ref _ref;
-  TeamRepository(
-      {required FirebaseFirestore firestore,
-      required StorageRepository storageRepository,
-      required Ref ref})
-      : _firestore = firestore,
-        _storageRepository = storageRepository,
-        _ref = ref;
+
+  TeamRepository({
+    required FirebaseFirestore firestore,
+  }) : _firestore = firestore;
 
   //**  getUserTeams */
 

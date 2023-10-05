@@ -2,7 +2,6 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:turf_tracker/features/bookings/widgets/booking_block.dart';
 import '../../../models/booking.dart';
 import '../../auth/provider/user_data_notifer.dart';
@@ -25,31 +24,6 @@ class UpcomingMatches extends ConsumerWidget {
             .getUpcomingBookings(uid: user.uid),
         itemBuilder: (context, doc) {
           Booking booking = doc.data();
-          DateTime dateTime = booking.date.toDate();
-
-          String formattedDate = DateFormat('MMMM').format(dateTime);
-          String getFormattedDayWithSuffix(int day) {
-            if (day >= 11 && day <= 13) {
-              return '$day' 'th';
-            }
-            switch (day % 10) {
-              case 1:
-                return '$day' 'st';
-              case 2:
-                return '$day' 'nd';
-              case 3:
-                return '$day' 'rd';
-              default:
-                return '$day' 'th';
-            }
-          }
-
-          String formattedDayWithSuffix =
-              getFormattedDayWithSuffix(dateTime.day);
-
-          String finalFormat = '$formattedDayWithSuffix $formattedDate';
-
-          String formattedTime = DateFormat('hh:mm a').format(dateTime);
 
           return BookingTile(booking: booking);
         },
@@ -58,6 +32,7 @@ class UpcomingMatches extends ConsumerWidget {
         ),
         errorBuilder: (context, error, stackTrace) {
           if (kDebugMode) {
+            print(error);
             print(stackTrace);
           }
           return Text(error.toString());

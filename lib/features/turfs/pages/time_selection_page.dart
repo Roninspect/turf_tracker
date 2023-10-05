@@ -11,6 +11,7 @@ import 'package:turf_tracker/features/turfs/controller/turf_controller.dart';
 import 'package:turf_tracker/features/turfs/provider/availbilty_provider.dart';
 import 'package:turf_tracker/features/turfs/provider/selected_timetable_provider.dart';
 import 'package:turf_tracker/features/turfs/widgets/date_selector_listview.dart';
+import 'package:turf_tracker/features/turfs/widgets/timeslot_info.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:turf_tracker/router/router.dart';
 import '../../../common/enums/slot_type.dart';
@@ -32,19 +33,6 @@ class TimeSelectionPage extends ConsumerWidget {
 
     final selectedTime = ref.watch(selectedTimeTableNotifierProvider);
 
-    // // Function to calculate the color based on singleTimeAvailable properties
-    // Color getCellColor(TimeTable singleTimeAvailable, bool isTimeSelected) {
-    //   if (isTimeSelected) {
-    //     return greenColor;
-    //   } else if (singleTimeAvailable.isLocked) {
-    //     return lockedColor;
-    //   } else if (singleTimeAvailable.isAvailable) {
-    //     return Colors.transparent; // Change this to another color if needed
-    //   } else {
-    //     return Colors.red;
-    //   }
-    // }
-
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -63,12 +51,7 @@ class TimeSelectionPage extends ConsumerWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  // timeslotdialog(context: context);
-                  ref.read(turfControllerProvider).resetTimeTable(
-                      selectedAvailibilty: timeAvailibiltyFromTimeSelected,
-                      context: context);
-                  ref.invalidate(availibiltyNotifierProvider);
-                  ref.invalidate(selectedTimeTableNotifierProvider);
+                  timeslotdialog(context: context);
                 },
                 icon: const Icon(
                   Icons.info,
@@ -320,5 +303,3 @@ class TimeSelectionPage extends ConsumerWidget {
         ));
   }
 }
- //is the grammar correct in this line "Someone is Considering to book this slot, Please try again later"?
-

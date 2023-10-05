@@ -1,21 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/common/custom_snackbar.dart';
 import 'package:turf_tracker/features/teams/providers/sports_icon_selected.dart';
-import 'package:turf_tracker/models/icon.dart';
 import 'package:turf_tracker/models/team.dart';
-
 import '../../../common/filepicker.dart';
 import '../controller/team_controller.dart';
 
@@ -123,7 +116,9 @@ class _EditTeamPageState extends ConsumerState<EditTeamPage> {
                                 bannerImage!,
                                 fit: BoxFit.fill,
                               ))
-                          : Image.network(widget.team.teamProfile)),
+                          : CachedNetworkImage(
+                              imageUrl: widget.team.teamProfile,
+                            )),
                 ),
               ),
               const SizedBox(height: 20),

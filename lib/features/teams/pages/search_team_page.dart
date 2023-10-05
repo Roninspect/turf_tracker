@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:turf_tracker/common/colors.dart';
-import 'package:turf_tracker/models/team.dart';
-
 import '../../../router/router.dart';
 import '../providers/search_products_provider.dart';
 

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:turf_tracker/features/rooms/controller/room_controller.dart';
 import 'package:turf_tracker/models/booking.dart';
-import 'package:turf_tracker/models/room.dart';
 import 'package:turf_tracker/router/router.dart';
 import '../../../common/colors.dart';
 import '../controller/booking_controller.dart';

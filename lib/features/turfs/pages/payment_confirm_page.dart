@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:turf_tracker/common/colors.dart';
+import 'package:turf_tracker/common/custom_snackbar.dart';
+import 'package:turf_tracker/common/enums/book_type.dart';
 import 'package:turf_tracker/features/auth/provider/user_data_notifer.dart';
 import 'package:turf_tracker/features/turfs/provider/slot_type_selector_provider.dart';
 import 'package:turf_tracker/models/turf.dart';
@@ -41,7 +43,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    timer = Timer(const Duration(minutes: 3), () {
+    timer = Timer(const Duration(minutes: 7), () {
       unlockSelectedTimeSlots(willPop: true);
     });
   }
@@ -51,7 +53,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     if (state == AppLifecycleState.inactive) {
       unlockSelectedTimeSlots(willPop: true);
     } else if (state == AppLifecycleState.detached) {
-      Timer(const Duration(minutes: 1), () {
+      Timer(const Duration(minutes: 7), () {
         unlockSelectedTimeSlots(willPop: true);
       });
     } else if (state == AppLifecycleState.paused) {
@@ -66,7 +68,12 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
         selectedSlot: ref.read(selectedTimeTableNotifierProvider)!,
         slotType: ref.read(slotTypeNotifierProvider)!);
     ref.invalidate(selectedTimeTableNotifierProvider);
-    willPop ? context.pop() : null;
+    willPop ? popTwice() : null;
+  }
+
+  void popTwice() {
+    context.pop();
+    context.pop();
   }
 
   @override
@@ -101,7 +108,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     String formattedWeekday =
         DateFormat('EEEE').format(avalibilty.date.toDate());
 
-    String _getFormattedDay(int day) {
+    String getFormattedDay(int day) {
       if (day >= 11 && day <= 13) {
         return '${day}th';
       }
@@ -117,7 +124,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
       }
     }
 
-    String formattedDay = _getFormattedDay(dateTime.day);
+    String formattedDay = getFormattedDay(dateTime.day);
 
     String finalFormat = '$formattedDay $formattedMonth, $formattedWeekday';
 
@@ -286,73 +293,77 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: greenColor,
+          backgroundColor: const Color(0xffE3106E),
           onPressed: () async {
             if (timelist != null) {
-              ref.read(turfControllerProvider).updateTimeSlotAfterBooking(
-                  selectedSlot: timelist,
-                  slotType: selectedSlotType!,
-                  selectedAvailibilty: avalibilty,
-                  context: context);
+              if (user.phoneNumber.isNotEmpty) {
+                // try {
+                // final res = await flutterBkash.pay(
+                //   context: context, // BuildContext context
+                //   amount: advancePaid.toDouble(), // amount as double
+                //   merchantInvoiceNumber: "invoice123",
+                // );
 
-              // await flutterBkash.pay(
-              //   context: context, // BuildContext context
-              //   amount: totalPrice.toDouble(), // amount as double
-              //   merchantInvoiceNumber: "invoice123",
-              // );
-
-              // if (avalibilty ==
-              //         Availibilty(
-              //             timeId: "",
-              //             turfId: "",
-              //             did: "",
-              //             status: "",
-              //             date: Timestamp(0, 0),
-              //             dimension: "",
-              //             availibility: []) ||
-              //     listofTime == []) {
-              //   showSnackbar(
-              //       context: context, text: "Please Select Date and Time Slot");
-              // } else {
-
-              ref
-                  .read(bookingControllerProvider.notifier)
-                  .saveBookingDataToFirestore(
-                      bookingModel: Booking(
-                          bookingId: const Uuid().v4(),
-                          bookerid: user.uid,
-                          bookerName: user.name,
-                          turfName: widget.turf.name,
-                          turfAddress: widget.turf.address,
-                          startTime: timelist.startTime,
-                          endTime: timelist.endTime,
-                          whatByWhat: dimensionSlected,
-                          date: timelist.startTime,
-                          phoneNumber: user.phoneNumber,
-                          transactionId: const Uuid().v4(),
-                          paymentId: const Uuid().v4(),
-                          paymentDateMade: Timestamp.now().toString(),
-                          totalPrice: totalPrice,
-                          paidInAdvance: advancePaid,
-                          toBePaidInTurf: toBePaidInTurf,
-                          district: widget.turf.district,
-                          turfId: widget.turf.turfId,
-                          isShared: false),
+                // if (res.trxId != "") {
+                if (mounted) {
+                  ref.read(turfControllerProvider).updateTimeSlotAfterBooking(
+                      selectedSlot: timelist,
+                      slotType: selectedSlotType!,
+                      selectedAvailibilty: avalibilty,
                       context: context);
 
-              ref.read(bookingControllerProvider.notifier).updateBalance(
-                  turfId: widget.turf.turfId,
-                  amountAfterCommission: turfOwnerWillGet);
+                  ref
+                      .read(bookingControllerProvider.notifier)
+                      .saveBookingDataToFirestore(
+                          bookingModel: Booking(
+                              bookingId: const Uuid().v4(),
+                              bookedBy: BookedBy.User.name,
+                              bookerid: user.uid,
+                              bookerName: user.name,
+                              turfName: widget.turf.name,
+                              turfAddress: widget.turf.address,
+                              startTime: timelist.startTime,
+                              bookedAt: Timestamp.now(),
+                              endTime: timelist.endTime,
+                              whatByWhat: dimensionSlected,
+                              date: timelist.startTime,
+                              phoneNumber: user.phoneNumber,
+                              transactionId: const Uuid().v4(),
+                              paymentId: const Uuid().v4(),
+                              paymentDateMade: Timestamp.now().toString(),
+                              totalPrice: totalPrice,
+                              paidInAdvance: advancePaid,
+                              toBePaidInTurf: toBePaidInTurf,
+                              district: widget.turf.district,
+                              turfId: widget.turf.turfId,
+                              isShared: false),
+                          context: context);
 
-              //   //** invalidating or resetting the selected data */
-              ref.invalidate(availibiltyNotifierProvider);
-              ref.invalidate(selectedTimeTableNotifierProvider);
+                  ref.read(bookingControllerProvider.notifier).updateBalance(
+                      turfId: widget.turf.turfId,
+                      amountAfterCommission: turfOwnerWillGet);
 
-              context.pop();
+                  //   //** invalidating or resetting the selected data */
+                  ref.invalidate(availibiltyNotifierProvider);
+                  ref.invalidate(selectedTimeTableNotifierProvider);
+
+                  context.pop();
+                }
+                //   // }
+                // } on BkashFailure catch (e) {
+                //   showSnackbar(context: context, text: e.message);
+                // }
+              } else {
+                showSnackbar(
+                    color: Colors.redAccent,
+                    context: context,
+                    text:
+                        "You Don't Have Any Phone Number, Please Add Your Phone Number");
+              }
             }
           },
           label: const Text(
-            "Proceed To Payment",
+            "Pay with Bkash",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
           ),
         ),

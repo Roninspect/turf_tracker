@@ -1,11 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import '../../../common/constants.dart';
 import '../../../common/failure.dart';
 import '../../../common/typedefs.dart';
@@ -30,7 +28,7 @@ final hasUserSelectedDistrictProvider = StreamProvider<UserModel>((ref) {
 });
 
 class AuthRepository {
-  FirebaseAuth _auth;
+  final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
   final FirebaseFirestore _firestore;
   final Ref ref;
@@ -92,7 +90,9 @@ class AuthRepository {
             rewardsPoint: 0,
             bookingsNo: 0,
             interestedSports: [],
-            hasGivenReview: false);
+            hasGivenReview: false,
+            hasClosed: false,
+            hasGivenFeedback: false);
         return right(
           await _firestore
               .collection('users')
@@ -131,7 +131,9 @@ class AuthRepository {
           rewardsPoint: 0,
           bookingsNo: 0,
           interestedSports: [],
-          hasGivenReview: false);
+          hasGivenReview: false,
+          hasClosed: false,
+          hasGivenFeedback: false);
 
       return right(
         await _firestore.collection('users').doc(userId).set(userModel.toMap()),

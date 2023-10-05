@@ -13,7 +13,6 @@ import '../../../models/dimensions.dart';
 import '../../../models/favorites.dart';
 import '../../../models/rating.dart';
 import '../../../models/turf.dart';
-import '../provider/slot_type_selector_provider.dart';
 
 class ArgsModel {
   final String turfId;

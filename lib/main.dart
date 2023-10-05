@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 
 import 'package:turf_tracker/router/router.dart';
 
@@ -16,12 +17,48 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  String? release;
+  @override
+  void initState() {
+    super.initState();
+    final newVersion = NewVersionPlus(
+      iOSId: 'com.disney.disneyplus',
+      androidId: 'com.whatsapp',
+      androidPlayStoreCountry: "es_ES",
+      androidHtmlReleaseNotes: true,
+    );
+
+    // if (simpleBehavior) {
+    basicStatusCheck(newVersion);
+    // }
+    // else {
+    // advancedStatusCheck(newVersion);
+    // } //support country code
+  }
+
+  basicStatusCheck(NewVersionPlus newVersion) async {
+    final version = await newVersion.getVersionStatus();
+    if (version != null) {
+      release = version.releaseNotes ?? "";
+
+      setState(() {});
+    }
+    newVersion.showAlertIfNecessary(
+      context: context,
+      launchModeVersion: LaunchModeVersion.external,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,

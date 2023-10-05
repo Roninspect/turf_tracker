@@ -1,7 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -9,13 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:turf_tracker/common/colors.dart';
 import 'package:turf_tracker/features/root/provider/nav_controller.dart';
 import 'package:uuid/uuid.dart';
-
 import 'package:turf_tracker/features/teams/repository/team_repository.dart';
-
 import '../../../common/custom_snackbar.dart';
 import '../../../common/failure.dart';
 import '../../../common/storage_provider.dart';
-import '../../../common/typedefs.dart';
 import '../../../models/icon.dart';
 import '../../../models/team.dart';
 import '../../../models/user.dart';
@@ -30,8 +24,9 @@ final teamControllerProvider =
       teamRepository: ref.watch(teamRepositoryProvider));
 });
 
-final getUserTeamsProvider = StreamProvider<List<Team>>((ref) {
-  return ref.watch(teamControllerProvider.notifier).getUserTeams();
+final getUserTeamsProvider =
+    StreamProvider.autoDispose.family<List<Team>, String>((ref, uid) {
+  return ref.watch(teamControllerProvider.notifier).getUserTeams(uid: uid);
 });
 
 final getuserByUidProvider =
@@ -68,9 +63,7 @@ class TeamController extends StateNotifier<bool> {
   }) : super(false);
 
 //** getting all my teams */
-  Stream<List<Team>> getUserTeams() {
-    final uid =
-        ref.watch(userDataNotifierProvider.select((value) => value.uid));
+  Stream<List<Team>> getUserTeams({required String uid}) {
     return teamRepository.getUserTeams(uid: uid);
   }
 

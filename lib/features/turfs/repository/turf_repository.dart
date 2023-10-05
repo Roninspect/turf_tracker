@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:intl/intl.dart';
 import 'package:turf_tracker/common/enums/status.dart';
-
 import 'package:turf_tracker/common/failure.dart';
 import 'package:turf_tracker/common/typedefs.dart';
 import 'package:turf_tracker/models/availibilty.dart';
@@ -16,28 +12,20 @@ import 'package:turf_tracker/models/favorites.dart';
 import 'package:turf_tracker/models/rating.dart';
 import 'package:turf_tracker/models/turf.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../../common/enums/slot_type.dart';
-import '../provider/slot_type_selector_provider.dart';
 
 final turfRepositoryProvider = Provider<TurfRepository>((ref) {
   return TurfRepository(
-      firestore: FirebaseFirestore.instance,
-      auth: FirebaseAuth.instance,
-      ref: ref);
+    firestore: FirebaseFirestore.instance,
+  );
 });
 
 class TurfRepository {
   final FirebaseFirestore _firestore;
-  final FirebaseAuth _auth;
-  final Ref _ref;
-  TurfRepository(
-      {required FirebaseFirestore firestore,
-      required FirebaseAuth auth,
-      required Ref ref})
-      : _firestore = firestore,
-        _auth = auth,
-        _ref = ref;
+
+  TurfRepository({
+    required FirebaseFirestore firestore,
+  }) : _firestore = firestore;
 
   //** fetching turfs by pre selected district */
 
@@ -125,7 +113,10 @@ class TurfRepository {
           List<TimeTable> slots, TimeTable selectedSlot) {
         return slots.map((timeTable) {
           final isUnavailable = shouldMarkUnavailable(selectedSlot, timeTable);
-          return isUnavailable ? timeTable.copyWith(isLocked: true) : timeTable;
+          return isUnavailable
+              ? timeTable.copyWith(
+                  isLocked: true, lockedAt: Timestamp.fromDate(DateTime.now()))
+              : timeTable;
         }).toList();
       }
 

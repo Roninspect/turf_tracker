@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_tracker/features/rooms/controller/room_controller.dart';
@@ -40,7 +41,9 @@ class AllJoinedRoomsPage extends ConsumerWidget {
                           );
                   },
                   error: (error, stackTrace) {
-                    print(stackTrace);
+                    if (kDebugMode) {
+                      print(stackTrace);
+                    }
                     return Center(
                       child: Text(error.toString()),
                     );

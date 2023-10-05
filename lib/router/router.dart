@@ -5,6 +5,7 @@ import 'package:turf_tracker/features/bookings/pages/booking_details_page.dart';
 import 'package:turf_tracker/features/bookings/pages/past_bookings.dart';
 import 'package:turf_tracker/features/bookings/pages/upcoming_page.dart';
 import 'package:turf_tracker/features/profile/pages/edit_profile.dart';
+import 'package:turf_tracker/features/profile/pages/user_profile_page.dart';
 import 'package:turf_tracker/features/rooms/pages/confirm_room_page.dart';
 import 'package:turf_tracker/features/teams/pages/add_mod_page.dart';
 import 'package:turf_tracker/features/teams/pages/create_team_page.dart';
@@ -53,7 +54,8 @@ enum AppRoutes {
   upcomingBookings,
   teamFormation,
   rooms,
-  confirmRoomPage
+  confirmRoomPage,
+  userProfile,
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -129,13 +131,23 @@ final routerProvider = Provider<GoRouter>((ref) {
               },
               routes: [
                 GoRoute(
-                  path: 'members',
-                  name: AppRoutes.members.name,
-                  builder: (context, state) {
-                    final Team team = state.extra as Team;
-                    return MembersPage(team: team);
-                  },
-                ),
+                    path: 'members',
+                    name: AppRoutes.members.name,
+                    builder: (context, state) {
+                      final Team team = state.extra as Team;
+                      return MembersPage(team: team);
+                    },
+                    routes: [
+                      GoRoute(
+                        path: 'userProfile/:id',
+                        name: AppRoutes.userProfile.name,
+                        builder: (context, state) {
+                          state.pathParameters["id"]!;
+                          final UserModel user = state.extra as UserModel;
+                          return UserProfilePage(userModel: user);
+                        },
+                      )
+                    ]),
                 GoRoute(
                   path: 'mods',
                   name: AppRoutes.mods.name,

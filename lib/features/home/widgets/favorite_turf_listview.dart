@@ -47,7 +47,10 @@ class FavoriteTurfListView extends ConsumerWidget {
                                     .read(navNotifierProvider.notifier)
                                     .navStateChange(1);
                               },
-                              child: const Text("Go on favorite some"))
+                              child: const Text(
+                                "Go on favorite some",
+                                style: TextStyle(color: Colors.greenAccent),
+                              ))
                         ],
                       ),
                     )

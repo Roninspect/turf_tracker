@@ -26,6 +26,11 @@ class BookingDetailsPage extends ConsumerWidget {
     // Format the date and time as "12.30 PM, 13th July"
     String formattedDate = DateFormat('hh:mm a, d MMMM, yyyy').format(dateTime);
 
+    String formattedStartTime = DateFormat('hh:mm a, d MMMM, yyyy')
+        .format(bookingModel.startTime.toDate());
+    String formattedEndTime = DateFormat('hh:mm a, d MMMM, yyyy')
+        .format(bookingModel.endTime.toDate());
+
     // Get the current date and time
     DateTime now = DateTime.now();
 
@@ -113,6 +118,27 @@ class BookingDetailsPage extends ConsumerWidget {
                   child: Text(
                     bookingModel.transactionId,
                     style: const TextStyle(fontSize: 15),
+                  ),
+                ),
+              ),
+              ListTile(
+                title: const Text(
+                  "Start Time: ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  formattedStartTime,
+                ),
+              ),
+              ListTile(
+                title: const Text(
+                  "Total value: ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                subtitle: SizedBox(
+                  width: 200,
+                  child: Text(
+                    formattedEndTime,
                   ),
                 ),
               ),

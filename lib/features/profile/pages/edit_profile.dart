@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:turf_tracker/common/custom_snackbar.dart';
 import 'package:turf_tracker/features/profile/controller/profile_controller.dart';
 import 'package:turf_tracker/models/user.dart';
 import '../../../common/colors.dart';
@@ -197,14 +198,23 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       maximumSize: const Size(200, 50),
                       minimumSize: const Size(200, 50)),
                   onPressed: () {
-                    ref.read(profileControllerProvider.notifier).updateProfile(
-                        userName: usernameController.text,
-                        address: addressController.text,
-                        phoneNumber: phoneNumberController.text,
-                        selectedDistrict: selectedDistrict,
-                        context: context,
-                        selectedSports: selectedSports);
-                    context.pop();
+                    if (phoneNumberController.text.length >= 11) {
+                      ref
+                          .read(profileControllerProvider.notifier)
+                          .updateProfile(
+                              userName: usernameController.text,
+                              address: addressController.text,
+                              phoneNumber: phoneNumberController.text,
+                              selectedDistrict: selectedDistrict,
+                              context: context,
+                              selectedSports: selectedSports);
+                      context.pop();
+                    } else {
+                      showSnackbar(
+                          color: Colors.redAccent,
+                          context: context,
+                          text: "Add a valid Phone Number");
+                    }
                   },
                   child: isLoading
                       ? const CircularProgressIndicator(

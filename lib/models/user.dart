@@ -1,10 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-
 import 'package:turf_tracker/models/icon.dart';
-import 'package:turf_tracker/models/team.dart';
 
 class UserModel {
   String uid;
@@ -15,6 +11,8 @@ class UserModel {
   String phoneNumber;
   String profilePic;
   bool hasGivenReview;
+  bool hasGivenFeedback;
+  bool hasClosed;
   num rewardsPoint;
   num bookingsNo;
   List<IconModel> interestedSports;
@@ -27,6 +25,8 @@ class UserModel {
     required this.phoneNumber,
     required this.profilePic,
     required this.hasGivenReview,
+    required this.hasGivenFeedback,
+    required this.hasClosed,
     required this.rewardsPoint,
     required this.bookingsNo,
     required this.interestedSports,
@@ -41,6 +41,8 @@ class UserModel {
     String? phoneNumber,
     String? profilePic,
     bool? hasGivenReview,
+    bool? hasGivenFeedback,
+    bool? hasClosed,
     num? rewardsPoint,
     num? bookingsNo,
     List<IconModel>? interestedSports,
@@ -54,6 +56,8 @@ class UserModel {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       profilePic: profilePic ?? this.profilePic,
       hasGivenReview: hasGivenReview ?? this.hasGivenReview,
+      hasGivenFeedback: hasGivenFeedback ?? this.hasGivenFeedback,
+      hasClosed: hasClosed ?? this.hasClosed,
       rewardsPoint: rewardsPoint ?? this.rewardsPoint,
       bookingsNo: bookingsNo ?? this.bookingsNo,
       interestedSports: interestedSports ?? this.interestedSports,
@@ -70,6 +74,8 @@ class UserModel {
       'phoneNumber': phoneNumber,
       'profilePic': profilePic,
       'hasGivenReview': hasGivenReview,
+      "hasGivenFeedback": hasGivenFeedback,
+      "hasClosed": hasClosed,
       'rewardsPoint': rewardsPoint,
       'bookingsNo': bookingsNo,
       'interestedSports': interestedSports.map((x) => x.toMap()).toList(),
@@ -86,6 +92,8 @@ class UserModel {
       phoneNumber: map['phoneNumber'] as String,
       profilePic: map['profilePic'] as String,
       hasGivenReview: map['hasGivenReview'] as bool,
+      hasGivenFeedback: map['hasGivenFeedback'] as bool,
+      hasClosed: map['hasClosed'] as bool,
       rewardsPoint: map['rewardsPoint'] as num,
       bookingsNo: map['bookingsNo'] as num,
       interestedSports: List<IconModel>.from(
@@ -100,11 +108,6 @@ class UserModel {
       UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, address: $address, district: $district, phoneNumber: $phoneNumber, profilePic: $profilePic, hasGivenReview: $hasGivenReview, rewardsPoint: $rewardsPoint, bookingsNo: $bookingsNo, interestedSports: $interestedSports)';
-  }
-
-  @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
@@ -116,6 +119,8 @@ class UserModel {
         other.phoneNumber == phoneNumber &&
         other.profilePic == profilePic &&
         other.hasGivenReview == hasGivenReview &&
+        other.hasGivenFeedback == hasGivenFeedback &&
+        other.hasClosed == hasClosed &&
         other.rewardsPoint == rewardsPoint &&
         other.bookingsNo == bookingsNo &&
         listEquals(other.interestedSports, interestedSports);
@@ -131,6 +136,8 @@ class UserModel {
         phoneNumber.hashCode ^
         profilePic.hashCode ^
         hasGivenReview.hashCode ^
+        hasGivenFeedback.hashCode ^
+        hasClosed.hashCode ^
         rewardsPoint.hashCode ^
         bookingsNo.hashCode ^
         interestedSports.hashCode;

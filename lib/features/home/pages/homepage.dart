@@ -16,10 +16,17 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  final TextEditingController feedbackController = TextEditingController();
   @override
   void initState() {
     super.initState();
     ref.read(userDataNotifierProvider.notifier).fetchData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    feedbackController.dispose();
   }
 
   @override
@@ -68,6 +75,18 @@ class _HomePageState extends ConsumerState<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              //** add phone number warning */
+              if (user.phoneNumber.isEmpty)
+                ListTile(
+                  onTap: () => context.pushNamed(AppRoutes.editProfile.name,
+                      extra: user),
+                  tileColor: Colors.redAccent,
+                  title: const Text("Please add your Phone Number"),
+                  trailing: const Icon(
+                    Icons.arrow_circle_right_sharp,
+                    color: Colors.white,
+                  ),
+                ),
               //** upcoming matches Listview */
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,7 +107,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ],
               ),
               const SizedBox(height: 10),
+
+              //** upcoming mathces listview */
               const UpcomingMatches(),
+
               const SizedBox(height: 20),
 
               //** favorite turfs Listview */

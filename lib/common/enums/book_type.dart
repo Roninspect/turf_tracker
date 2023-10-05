@@ -1,0 +1,4 @@
+enum BookedBy {
+  User,
+  TurfOwner,
+}
