@@ -26,7 +26,7 @@ class TimeSlotInfoBlock extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 20),
-        SizedBox(width: 90, child: Text(text))
+        SizedBox(width: 200, child: Text(text))
       ],
     );
   }

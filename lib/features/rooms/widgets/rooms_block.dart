@@ -44,9 +44,10 @@ class RoomsCard extends ConsumerWidget {
               children: [
                 Container(
                   width: 120,
-                  decoration: const BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  decoration: BoxDecoration(
+                      color: room.isExpired ? Colors.redAccent : Colors.green,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
                   child: Column(
                     children: [
                       const SizedBox(height: 5),
