@@ -129,7 +129,7 @@ class _PaymentConfirmPageState extends ConsumerState<PaymentConfirmPage>
     String finalFormat = '$formattedDay $formattedMonth, $formattedWeekday';
 
     num totalPrice = timelist != null ? timelist.price : 0;
-    num advancePaid = 500;
+    num advancePaid = 0.3 * totalPrice;
 
     bool discountApplicable =
         widget.turf.discounts.any((e) => user.uid == e.uid);
